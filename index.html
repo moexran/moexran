@@ -3,112 +3,169 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@moexran</title>
+<title>@moexran — your angel</title>
 
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap');
+/* ============================================================
+   0. FONTS + COLOR TOKENS
+   (DO NOT TOUCH the @import. You CAN edit the hex values below
+   to retune the palette — everything on the page pulls from
+   these variables.)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Quicksand:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 :root{
-  --moex-blush:      #FFDBDA;   /* soft glow / halo light   */
-  --moex-orchid:     #DB7FBE;   /* primary accent            */
-  --moex-dust:       #D5C5C8;   /* secondary text            */
-  --moex-slate:      #9DA3A4;   /* muted text / borders      */
-  --moex-mauve:      #604D53;   /* deep panel tone           */
-  --moex-black:      #050304;   /* base background           */
-  --moex-floral:     floralwhite; /* bright accent text      */
-  --moex-red:        #ff4d5e;   /* status / live indicator   */
+  /* ---- SOFT MODE (default) : lover-girl on the front ---- */
+  --moex-bg:        #FAF5EC;   /* page background            */
+  --moex-bg-alt:    #FAE9D7;   /* panel / card background    */
+  --moex-pink:      #F7A0B8;   /* primary accent             */
+  --moex-pink-soft: #FBB6C4;   /* secondary accent / hover   */
+  --moex-ink:       #935661;   /* main text (doubles as the  */
+                                /* dark-mode bg — the bridge  */
+                                /* color between both modes)  */
+  --moex-ink-soft:  rgba(147,86,97,0.65);  /* secondary text  */
+  --moex-line:      rgba(147,86,97,0.22);  /* borders         */
+  --moex-glow:      rgba(247,160,184,0.45);/* soft pink glow  */
+  --moex-panel-a:   rgba(247,160,184,0.14);
+  --moex-panel-b:   rgba(255,255,255,0.55);
 
-  --moex-font-display: 'Cinzel', serif;
-  --moex-font-body:    'Jost', sans-serif;
+  --moex-font-display: 'Cormorant Garamond', serif;
+  --moex-font-body:    'Quicksand', sans-serif;
   --moex-font-mono:    'Space Mono', monospace;
+
+  color-scheme: light;
+}
+
+/* ---- UNHINGED MODE (toggled) : yandere in the back ---- */
+body.moex-dark{
+  --moex-bg:        #07080A;
+  --moex-bg-alt:    #14090c;
+  --moex-pink:      #935661;
+  --moex-pink-soft: #b97e88;
+  --moex-ink:       #F0EADC;
+  --moex-ink-soft:  rgba(240,234,220,0.62);
+  --moex-line:      rgba(147,86,97,0.45);
+  --moex-glow:      rgba(147,86,97,0.55);
+  --moex-panel-a:   rgba(147,86,97,0.16);
+  --moex-panel-b:   rgba(0,0,0,0.55);
+  color-scheme: dark;
 }
 
 /* ============================================================
-   1. GLOBAL RESET + BACKGROUND ATMOSPHERE
-   (DO NOT TOUCH — this builds the dark gradient + grain that
-   sits behind the whole site)
+   1. GLOBAL RESET + ATMOSPHERE
+   (DO NOT TOUCH — builds the ambient gradient behind the page
+   and handles the smooth crossfade between the two modes)
    ============================================================ */
 
 *{ box-sizing:border-box; margin:0; padding:0; }
-
 html{ scroll-behavior:smooth; }
 
 body.moex-body{
   background:
-    radial-gradient(1200px 600px at 50% -10%, rgba(219,127,190,0.16), transparent 60%),
-    radial-gradient(900px 500px at 90% 20%, rgba(255,219,218,0.06), transparent 55%),
-    var(--moex-black);
-  color: var(--moex-dust);
+    radial-gradient(1100px 550px at 50% -10%, var(--moex-panel-a), transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, var(--moex-glow), transparent 55%),
+    var(--moex-bg);
+  color: var(--moex-ink);
   font-family: var(--moex-font-body);
   min-height:100vh;
   position:relative;
   overflow-x:hidden;
-}
-
-.moex-grain{
-  position:fixed; inset:0; pointer-events:none; z-index:200; opacity:0.05; mix-blend-mode:overlay;
-  background-image:url('data:image/svg+xml;utf8,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E');
-}
-
-.moex-scanlines{
-  position:fixed; inset:0; pointer-events:none; z-index:199;
-  background:repeating-linear-gradient(0deg, rgba(0,0,0,0.10) 0px, rgba(0,0,0,0.10) 1px, transparent 1px, transparent 3px);
-  opacity:0.35;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 .moex-page{
   max-width:1080px;
   margin:0 auto;
-  padding: 40px 24px 80px;
+  padding: 40px 24px 90px;
   position:relative;
   z-index:1;
 }
 
-::selection{ background:var(--moex-orchid); color:var(--moex-black); }
+::selection{ background:var(--moex-pink); color:var(--moex-bg); }
 
-/* custom scrollbars, used on every horizontal-scroll strip on the page */
+/* custom scrollbars for every horizontal-scroll strip on the page */
 .moex-hscroll::-webkit-scrollbar{ height:8px; }
-.moex-hscroll::-webkit-scrollbar-track{ background:rgba(255,255,255,0.03); border-radius:10px; }
-.moex-hscroll::-webkit-scrollbar-thumb{ background:var(--moex-mauve); border-radius:10px; }
-.moex-hscroll::-webkit-scrollbar-thumb:hover{ background:var(--moex-orchid); }
+.moex-hscroll::-webkit-scrollbar-track{ background:var(--moex-panel-a); border-radius:10px; }
+.moex-hscroll::-webkit-scrollbar-thumb{ background:var(--moex-pink); border-radius:10px; }
+.moex-hscroll::-webkit-scrollbar-thumb:hover{ background:var(--moex-pink-soft); }
 
 /* ============================================================
-   2. SECTION DIVIDER (small signature motif reused everywhere)
+   2. FALLING SPARKLES + HEARTS
+   (DO NOT TOUCH — populated by the script at the bottom of the
+   page. Purely decorative, ignores clicks.)
+   ============================================================ */
+
+.moex-fall-layer{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:50;
+  overflow:hidden;
+}
+
+.moex-fall-bit{
+  position:absolute;
+  top:-8%;
+  color: var(--moex-pink);
+  opacity:0.55;
+  will-change: transform, opacity;
+  animation: moexFall linear infinite;
+  filter: drop-shadow(0 0 6px var(--moex-glow));
+}
+
+@keyframes moexFall{
+  0%{   transform: translate(0,0) rotate(0deg);   opacity:0; }
+  8%{   opacity:0.6; }
+  50%{  transform: translate(var(--moex-sway,20px), 55vh) rotate(160deg); }
+  92%{  opacity:0.45; }
+  100%{ transform: translate(0, 112vh) rotate(320deg); opacity:0; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .moex-fall-bit{ animation:none; display:none; }
+}
+
+/* ============================================================
+   3. SECTION TITLE (shared divider motif)
    ============================================================ */
 
 .moex-section-title{
   font-family:var(--moex-font-display);
+  font-style:italic;
   font-weight:600;
-  letter-spacing:4px;
-  text-transform:uppercase;
-  font-size:0.95rem;
-  color:var(--moex-floral);
+  letter-spacing:1px;
+  font-size:1.6rem;
+  color:var(--moex-ink);
   display:flex;
   align-items:center;
   gap:16px;
-  margin: 56px 0 20px;
+  margin: 60px 0 20px;
+  cursor:default;
 }
 .moex-section-title::before,
 .moex-section-title::after{
   content:'';
   flex:1;
   height:1px;
-  background:linear-gradient(90deg, transparent, var(--moex-mauve), transparent);
+  background:linear-gradient(90deg, transparent, var(--moex-line), transparent);
 }
-.moex-section-title::before{ background:linear-gradient(90deg, transparent, var(--moex-mauve)); }
-.moex-section-title::after{ background:linear-gradient(90deg, var(--moex-mauve), transparent); }
+.moex-section-title::before{ background:linear-gradient(90deg, transparent, var(--moex-line)); }
+.moex-section-title::after{ background:linear-gradient(90deg, var(--moex-line), transparent); }
 .moex-section-title span.moex-halo-dot{
   width:6px; height:6px; border-radius:50%;
-  background:var(--moex-orchid);
-  box-shadow:0 0 8px var(--moex-orchid), 0 0 16px rgba(219,127,190,0.6);
+  background:var(--moex-pink);
+  box-shadow:0 0 8px var(--moex-pink), 0 0 16px var(--moex-glow);
   flex:none;
 }
+/* little "mask slipping" easter egg — hover the "Your Angel" title */
+.moex-title-swap{ position:relative; transition:0.2s ease; }
+.moex-title-swap:hover{ color:var(--moex-pink); letter-spacing:2px; }
 
 /* ============================================================
-   3. BANNER
-   EDIT ME: swap the <img src="..."> further down in the HTML.
-   Recommended banner size: ~1600x400px.
+   4. BANNER
+   EDIT ME: swap the <img src="..."> further down. Recommended
+   banner size: ~1600x400px.
    ============================================================ */
 
 .moex-banner-wrap{ position:relative; }
@@ -116,30 +173,30 @@ body.moex-body{
 .moex-banner{
   width:100%;
   height:300px;
-  border-radius:18px;
+  border-radius:22px;
   overflow:hidden;
   position:relative;
-  border:1px solid rgba(157,163,164,0.25);
-  box-shadow:0 20px 60px rgba(0,0,0,0.55);
+  border:1px solid var(--moex-line);
+  box-shadow:0 20px 50px rgba(147,86,97,0.25);
 }
 
 .moex-banner img{
   width:100%; height:100%; object-fit:cover;
-  filter:grayscale(0.1) saturate(1.1) contrast(1.05) brightness(0.72);
+  transition: filter 0.6s ease;
 }
+body.moex-dark .moex-banner img{ filter:grayscale(0.15) saturate(1.05) contrast(1.05) brightness(0.7); }
 
 .moex-banner::after{
   content:'';
   position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(5,3,4,0) 40%, rgba(5,3,4,0.85) 100%),
-             linear-gradient(90deg, rgba(96,77,83,0.35), transparent 40%);
+  background:linear-gradient(180deg, rgba(0,0,0,0) 45%, var(--moex-bg) 100%);
+  opacity:0.85;
   pointer-events:none;
 }
 
 /* ============================================================
-   4. HEADER ROW — pfp + username
-   (pfp overlaps the banner's bottom-left corner on purpose —
-   DO NOT TOUCH the negative margin unless you resize the pfp too)
+   5. HEADER ROW — pfp + username
+   (pfp overlaps the banner's bottom-left corner on purpose)
    ============================================================ */
 
 .moex-header-row{
@@ -152,26 +209,15 @@ body.moex-body{
   z-index:5;
 }
 
-.moex-pfp-wrap{
-  position:relative;
-  width:150px;
-  height:150px;
-  flex:none;
-}
+.moex-pfp-wrap{ position:relative; width:150px; height:150px; flex:none; }
 
 .moex-halo-ring{
-  position:absolute;
-  inset:-18px;
+  position:absolute; inset:-16px;
   border-radius:50%;
-  border:1.5px dashed rgba(219,127,190,0.55);
-  box-shadow:0 0 24px rgba(255,219,218,0.28), inset 0 0 16px rgba(219,127,190,0.12);
+  border:1.5px dashed var(--moex-pink);
+  opacity:0.7;
+  box-shadow:0 0 20px var(--moex-glow);
   animation: moexHaloSpin 22s linear infinite;
-}
-.moex-halo-ring::before{
-  content:'';
-  position:absolute; inset:9px;
-  border-radius:50%;
-  border:1px solid rgba(157,163,164,0.3);
 }
 @keyframes moexHaloSpin{ to{ transform:rotate(360deg); } }
 
@@ -179,10 +225,10 @@ body.moex-body{
   width:150px; height:150px;
   border-radius:50%;
   overflow:hidden;
-  border:3px solid var(--moex-floral);
-  box-shadow:0 8px 24px rgba(0,0,0,0.6);
+  border:3px solid var(--moex-bg);
+  box-shadow:0 8px 22px rgba(147,86,97,0.35);
   position:relative; z-index:2;
-  background:#000;
+  background:var(--moex-bg-alt);
 }
 .moex-pfp img{ width:100%; height:100%; object-fit:cover; }
 
@@ -190,26 +236,24 @@ body.moex-body{
 
 .moex-username{
   font-family:var(--moex-font-display);
-  font-size:1.9rem;
-  font-weight:600;
-  color:var(--moex-floral);
-  letter-spacing:1px;
-  text-shadow:0 0 20px rgba(255,219,218,0.25);
+  font-size:2.1rem;
+  font-weight:700;
+  color:var(--moex-ink);
+  letter-spacing:0.5px;
 }
 
 .moex-subtitle{
   font-family:var(--moex-font-mono);
-  font-size:0.78rem;
-  letter-spacing:2px;
+  font-size:0.75rem;
+  letter-spacing:1.5px;
   text-transform:uppercase;
-  color:var(--moex-slate);
+  color:var(--moex-ink-soft);
   margin-top:6px;
 }
 
 /* ============================================================
-   5. TAGS ROW
-   EDIT ME: duplicate/delete .moex-tag blocks in the HTML below
-   to change how many tags you have.
+   6. TAGS ROW (analog-horror style tag chips)
+   EDIT ME: duplicate/delete .moex-tag blocks in the HTML below.
    ============================================================ */
 
 .moex-tags-row{
@@ -225,124 +269,112 @@ body.moex-body{
   font-size:0.72rem;
   letter-spacing:1px;
   text-transform:uppercase;
-  color:var(--moex-dust);
-  background:rgba(96,77,83,0.25);
-  border:1px solid rgba(157,163,164,0.3);
+  color:var(--moex-ink);
+  background:var(--moex-panel-a);
+  border:1px solid var(--moex-line);
   padding:7px 14px;
   border-radius:999px;
   transition:0.25s ease;
 }
-.moex-tag span{ color:var(--moex-orchid); margin-right:6px; }
+.moex-tag span{ color:var(--moex-pink); margin-right:6px; font-weight:700; }
 .moex-tag:hover{
-  border-color:var(--moex-orchid);
-  color:var(--moex-floral);
-  box-shadow:0 0 14px rgba(219,127,190,0.3);
+  border-color:var(--moex-pink);
+  box-shadow:0 0 14px var(--moex-glow);
   transform:translateY(-1px);
 }
 
 /* ============================================================
-   6. PANELS (shared base for status / about / dropdown wrapper)
+   7. PANELS (shared base)
    ============================================================ */
 
 .moex-panel{
-  background:linear-gradient(160deg, rgba(96,77,83,0.16), rgba(5,3,4,0.6));
-  border:1px solid rgba(157,163,164,0.22);
-  border-radius:20px;
+  background:linear-gradient(160deg, var(--moex-panel-b), var(--moex-panel-a));
+  border:1px solid var(--moex-line);
+  border-radius:24px;
   padding:26px 28px;
-  margin-top:20px;
+  margin-top:22px;
   position:relative;
   backdrop-filter:blur(6px);
 }
 
 .moex-panel-label{
   font-family:var(--moex-font-mono);
-  font-size:0.68rem;
+  font-size:0.66rem;
   letter-spacing:3px;
   text-transform:uppercase;
-  color:var(--moex-orchid);
+  color:var(--moex-pink);
   position:absolute;
   top:-11px; left:22px;
-  background:#0c0709;
+  background:var(--moex-bg);
   padding:0 10px;
-  border:1px solid rgba(219,127,190,0.35);
+  border:1px solid var(--moex-line);
   border-radius:999px;
 }
 
 /* ============================================================
-   7. LIVE STATUS BOX
-   EDIT ME: change the label/value text in the HTML further down.
+   8. FAKE "NOW PLAYING" PLAYER — smaller, decorative only
+   EDIT ME: change track/artist text + progress + image below.
    ============================================================ */
 
-.moex-status-head{
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:16px;
+.moex-player{
+  display:grid;
+  grid-template-columns: 96px 1fr;
+  gap:16px;
+  align-items:center;
+  background:linear-gradient(160deg, var(--moex-panel-b), var(--moex-panel-a));
+  border:1px solid var(--moex-line);
+  border-radius:20px;
+  padding:14px 18px;
+  margin-top:22px;
+  text-decoration:none;
+  color:var(--moex-ink);
+  max-width:420px;
+  transition:0.25s ease;
 }
+.moex-player:hover{ box-shadow:0 12px 30px var(--moex-glow); transform:translateY(-2px); }
 
-.moex-status-title{
-  font-family:var(--moex-font-display);
-  font-size:1rem;
-  letter-spacing:2px;
-  color:var(--moex-floral);
-  text-transform:uppercase;
+.moex-player-art{
+  width:96px; height:96px;
+  border-radius:14px;
+  overflow:hidden;
+  flex:none;
+  box-shadow:0 6px 16px rgba(147,86,97,0.3);
 }
+.moex-player-art img{ width:100%; height:100%; object-fit:cover; }
 
-.moex-live-badge{
-  display:flex; align-items:center; gap:8px;
+.moex-player-eyebrow{
+  display:flex; align-items:center; gap:7px;
   font-family:var(--moex-font-mono);
-  font-size:0.72rem;
-  letter-spacing:2px;
-  color:var(--moex-red);
+  font-size:0.62rem;
+  letter-spacing:1.5px;
   text-transform:uppercase;
+  color:var(--moex-ink-soft);
+  margin-bottom:6px;
 }
+.moex-player-eyebrow .moex-pulse{
+  width:7px; height:7px; border-radius:50%;
+  background:var(--moex-pink);
+  box-shadow:0 0 8px var(--moex-pink);
+  animation:moexBlink 1.6s ease-in-out infinite;
+}
+@keyframes moexBlink{ 0%,100%{opacity:1;} 50%{opacity:0.25;} }
 
-.moex-blink-dot{
-  width:9px; height:9px;
-  border-radius:50%;
-  background:var(--moex-red);
-  box-shadow:0 0 8px var(--moex-red);
-  animation:moexBlink 1.4s infinite;
-}
-@keyframes moexBlink{
-  0%, 100%{ opacity:1; }
-  50%{ opacity:0.15; }
-}
+.moex-player-track{ font-family:var(--moex-font-display); font-weight:700; font-size:1.05rem; line-height:1.2; }
+.moex-player-artist{ font-size:0.8rem; color:var(--moex-ink-soft); font-style:italic; margin-bottom:10px; }
 
-.moex-status-row{
-  display:flex; gap:12px;
-  font-family:var(--moex-font-mono);
-  font-size:0.82rem;
-  padding:8px 0;
-  border-bottom:1px dashed rgba(157,163,164,0.18);
-}
-.moex-status-row:last-child{ border-bottom:none; }
-
-.moex-status-label{
-  width:110px; flex:none;
-  color:var(--moex-slate);
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-.moex-status-value{ color:var(--moex-dust); }
-.moex-status-value.moex-value-active{
-  color:var(--moex-floral);
-}
+.moex-player-bar{ height:4px; border-radius:2px; background:var(--moex-line); position:relative; margin-bottom:6px; }
+.moex-player-bar span{ position:absolute; left:0; top:0; bottom:0; width:38%; background:var(--moex-pink); border-radius:2px; }
+.moex-player-times{ display:flex; justify-content:space-between; font-family:var(--moex-font-mono); font-size:0.62rem; color:var(--moex-ink-soft); }
 
 /* ============================================================
-   8. ABOUT ME + LINK BUTTONS
+   9. ABOUT ME + LINK BUTTONS
    EDIT ME: your bio text + your links/labels in the HTML below.
    ============================================================ */
 
-.moex-about-text{
-  font-size:0.95rem;
-  line-height:1.7;
-  color:var(--moex-dust);
-}
-.moex-about-text strong{ color:var(--moex-floral); }
+.moex-about-text{ font-size:1rem; line-height:1.7; color:var(--moex-ink); }
+.moex-about-text strong{ color:var(--moex-pink); }
 
-.moex-links-row{
-  display:flex; flex-wrap:wrap; gap:12px;
-  margin-top:18px;
-}
+.moex-links-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
 
 .moex-btn{
   font-family:var(--moex-font-mono);
@@ -350,31 +382,57 @@ body.moex-body{
   letter-spacing:1.5px;
   text-transform:uppercase;
   text-decoration:none;
-  color:var(--moex-floral);
-  background:rgba(96,77,83,0.3);
-  border:1px solid rgba(219,127,190,0.35);
+  color:var(--moex-ink);
+  background:var(--moex-panel-a);
+  border:1px solid var(--moex-line);
   padding:10px 18px;
   border-radius:999px;
   transition:0.25s ease;
   display:inline-flex; align-items:center; gap:8px;
 }
 .moex-btn:hover{
-  background:var(--moex-orchid);
-  color:var(--moex-black);
-  border-color:var(--moex-orchid);
-  box-shadow:0 0 20px rgba(219,127,190,0.55);
+  background:var(--moex-pink);
+  color:var(--moex-bg);
+  border-color:var(--moex-pink);
+  box-shadow:0 0 20px var(--moex-glow);
   transform:translateY(-2px);
 }
 
 /* ============================================================
-   9. DROPDOWNS — soft edges as requested
+   10. MEDIA SLIDER — manual, square photos
+   EDIT ME: swap image src links. Add/remove .moex-gallery-sq
+   blocks freely, this one scrolls manually (drag/scroll).
+   ============================================================ */
+
+.moex-gallery{
+  display:flex; gap:16px;
+  padding:6px 4px 16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+}
+.moex-gallery-sq{
+  flex:0 0 190px;
+  aspect-ratio:1/1;
+  border-radius:18px;
+  overflow:hidden;
+  scroll-snap-align:start;
+  border:1px solid var(--moex-line);
+  box-shadow:0 8px 22px rgba(147,86,97,0.15);
+  transition:0.3s ease;
+}
+.moex-gallery-sq img{ width:100%; height:100%; object-fit:cover; transition:0.4s ease; }
+.moex-gallery-sq:hover{ transform:translateY(-5px); border-color:var(--moex-pink); }
+.moex-gallery-sq:hover img{ transform:scale(1.08); }
+
+/* ============================================================
+   11. DROPDOWNS — soft edges
    EDIT ME: duplicate/edit <details class="moex-dropdown"> blocks.
    ============================================================ */
 
 .moex-dropdown{
-  background:rgba(213,197,200,0.05);
-  border:1px solid rgba(157,163,164,0.22);
-  border-radius:16px;
+  background:var(--moex-panel-a);
+  border:1px solid var(--moex-line);
+  border-radius:20px;
   margin-top:14px;
   overflow:hidden;
   transition:0.25s ease;
@@ -386,58 +444,53 @@ body.moex-body{
   cursor:pointer;
   padding:16px 20px;
   font-family:var(--moex-font-body);
-  font-weight:500;
-  font-size:0.92rem;
-  color:var(--moex-floral);
+  font-weight:600;
+  font-size:0.95rem;
+  color:var(--moex-ink);
   display:flex; align-items:center; justify-content:space-between;
 }
 .moex-dropdown summary::-webkit-details-marker{ display:none; }
 .moex-dropdown summary::after{
   content:'⌄';
-  color:var(--moex-orchid);
-  font-size:1.1rem;
+  color:var(--moex-pink);
+  font-size:1.2rem;
   transition:transform 0.25s ease;
 }
 .moex-dropdown[open] summary::after{ transform:rotate(180deg); }
-.moex-dropdown[open]{ border-color:rgba(219,127,190,0.4); }
+.moex-dropdown[open]{ border-color:var(--moex-pink); }
 
 .moex-dropdown-content{
   padding:0 20px 18px;
-  font-size:0.88rem;
+  font-size:0.9rem;
   line-height:1.7;
-  color:var(--moex-dust);
+  color:var(--moex-ink-soft);
 }
 
 /* ============================================================
-   10. SCROLLING TERMINAL FEED
+   12. SCROLLING TERMINAL FEED
    EDIT ME: each line is one .moex-term-msg — copy/delete to
-   add or remove lines. Keep the [00:00] time format if you can,
-   it's part of the look.
+   add or remove lines. Keep the [00:00] time format if you can.
    ============================================================ */
 
 .moex-terminal{
-  background:#0a0608;
-  border:1px solid rgba(219,127,190,0.25);
-  border-radius:14px;
+  background:var(--moex-bg-alt);
+  border:1px solid var(--moex-line);
+  border-radius:18px;
   padding:20px 22px;
   margin-top:20px;
 }
-
 .moex-term-head{
   display:flex; align-items:center; justify-content:space-between;
   font-family:var(--moex-font-mono);
-  font-size:0.75rem;
+  font-size:0.72rem;
   letter-spacing:1.5px;
   text-transform:uppercase;
-  color:var(--moex-slate);
+  color:var(--moex-ink-soft);
   padding-bottom:12px;
   margin-bottom:12px;
-  border-bottom:1px dashed rgba(157,163,164,0.2);
+  border-bottom:1px dashed var(--moex-line);
 }
-.moex-term-live{
-  color:var(--moex-red);
-  animation:moexBlink 2s infinite;
-}
+.moex-term-live{ color:var(--moex-pink); animation:moexBlink 2s infinite; }
 
 .moex-term-window{
   height:150px;
@@ -446,45 +499,35 @@ body.moex-body{
   -webkit-mask-image:linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
   mask-image:linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
 }
-
 .moex-term-feed{
   display:flex; flex-direction:column; gap:12px;
-  animation:moexTermScroll 24s linear infinite;
+  animation:moexTermScroll 26s linear infinite;
 }
 .moex-term-window:hover .moex-term-feed{ animation-play-state:paused; }
-
 @keyframes moexTermScroll{
   0%{ transform:translateY(0); }
   100%{ transform:translateY(-50%); }
 }
-
-.moex-term-msg{
-  font-family:var(--moex-font-mono);
-  font-size:0.8rem;
-  line-height:1.5;
-  color:var(--moex-dust);
-}
-.moex-term-time{ color:var(--moex-slate); margin-right:8px; }
-.moex-term-user{ color:var(--moex-orchid); font-weight:700; margin-right:8px; }
+.moex-term-msg{ font-family:var(--moex-font-mono); font-size:0.8rem; line-height:1.5; color:var(--moex-ink); }
+.moex-term-time{ color:var(--moex-ink-soft); margin-right:8px; }
+.moex-term-user{ color:var(--moex-pink); font-weight:700; margin-right:8px; }
 
 /* ============================================================
-   11. SERIES CARDS
+   13. SERIES CARDS
    EDIT ME: duplicate/edit .moex-series-card blocks below.
    ============================================================ */
 
 .moex-series-scroll{
-  display:flex;
-  gap:18px;
+  display:flex; gap:18px;
   padding:6px 4px 16px;
   overflow-x:auto;
   scroll-snap-type:x mandatory;
 }
-
 .moex-series-card{
   flex:0 0 240px;
-  background:linear-gradient(165deg, rgba(96,77,83,0.22), rgba(5,3,4,0.75));
-  border:1px solid rgba(157,163,164,0.22);
-  border-radius:18px;
+  background:linear-gradient(165deg, var(--moex-panel-b), var(--moex-panel-a));
+  border:1px solid var(--moex-line);
+  border-radius:20px;
   overflow:hidden;
   text-decoration:none;
   color:inherit;
@@ -494,171 +537,113 @@ body.moex-body{
 }
 .moex-series-card:hover{
   transform:translateY(-6px);
-  border-color:rgba(219,127,190,0.5);
-  box-shadow:0 16px 40px rgba(219,127,190,0.18);
+  border-color:var(--moex-pink);
+  box-shadow:0 16px 36px var(--moex-glow);
 }
-
 .moex-series-banner{ height:130px; width:100%; overflow:hidden; }
-.moex-series-banner img{
-  width:100%; height:100%; object-fit:cover;
-  filter:saturate(1.05) brightness(0.85);
-  transition:0.4s ease;
-}
-.moex-series-card:hover .moex-series-banner img{ transform:scale(1.06); filter:brightness(1); }
+.moex-series-banner img{ width:100%; height:100%; object-fit:cover; transition:0.4s ease; }
+.moex-series-card:hover .moex-series-banner img{ transform:scale(1.06); }
 
 .moex-series-body{ padding:16px 16px 18px; }
-.moex-series-title{
-  font-family:var(--moex-font-display);
-  font-size:0.95rem;
-  color:var(--moex-floral);
-  letter-spacing:0.5px;
-  margin-bottom:8px;
-}
+.moex-series-title{ font-family:var(--moex-font-display); font-weight:700; font-size:1.1rem; color:var(--moex-ink); margin-bottom:8px; }
 .moex-series-desc{
-  font-size:0.8rem;
-  line-height:1.55;
-  color:var(--moex-slate);
-  display:-webkit-box;
-  -webkit-line-clamp:3;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+  font-size:0.82rem; line-height:1.55; color:var(--moex-ink-soft);
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
 }
-
-.moex-series-genres{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin-top:12px;
-}
+.moex-series-genres{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
 .moex-series-genre{
-  font-family:var(--moex-font-mono);
-  font-size:0.62rem;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  color:var(--moex-dust);
-  background:rgba(157,163,164,0.1);
-  border:1px solid rgba(157,163,164,0.25);
-  padding:4px 9px;
-  border-radius:999px;
+  font-family:var(--moex-font-mono); font-size:0.6rem; letter-spacing:1px; text-transform:uppercase;
+  color:var(--moex-ink-soft); background:var(--moex-panel-a); border:1px solid var(--moex-line);
+  padding:4px 9px; border-radius:999px;
 }
-
-.moex-series-links{
-  display:flex;
-  gap:8px;
-  margin-top:14px;
-}
+.moex-series-links{ display:flex; gap:8px; margin-top:14px; }
 .moex-series-btn{
-  flex:1;
-  text-align:center;
-  font-family:var(--moex-font-mono);
-  font-size:0.66rem;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  text-decoration:none;
-  color:var(--moex-floral);
-  background:rgba(96,77,83,0.3);
-  border:1px solid rgba(219,127,190,0.3);
-  padding:8px 8px;
-  border-radius:999px;
-  transition:0.25s ease;
+  flex:1; text-align:center; font-family:var(--moex-font-mono); font-size:0.64rem; letter-spacing:1px;
+  text-transform:uppercase; text-decoration:none; color:var(--moex-ink); background:var(--moex-panel-a);
+  border:1px solid var(--moex-line); padding:8px 8px; border-radius:999px; transition:0.25s ease;
 }
-.moex-series-btn:hover{
-  background:var(--moex-orchid);
-  color:var(--moex-black);
-  border-color:var(--moex-orchid);
-  box-shadow:0 0 14px rgba(219,127,190,0.45);
-}
+.moex-series-btn:hover{ background:var(--moex-pink); color:var(--moex-bg); border-color:var(--moex-pink); box-shadow:0 0 14px var(--moex-glow); }
 
 /* ============================================================
-   12. SONA SLIDER — auto-scrolling, pauses on hover
-   EDIT ME: swap images/names in the HTML. If you add/remove
-   sonas, duplicate the FULL set twice like the example does —
-   that's what makes the loop seamless.
+   14. AUTO-SLIDING MEDIA SLIDER — square photos, loops forever
+   EDIT ME: swap images. If you change how many photos you have,
+   duplicate the FULL set twice, same as below — that keeps the
+   auto-scroll looking seamless.
    ============================================================ */
 
-.moex-slider{
+.moex-autoslider{
   overflow:hidden;
-  border-radius:18px;
-  border:1px solid rgba(157,163,164,0.2);
-  padding:22px 0;
-  background:radial-gradient(600px 200px at 50% 0%, rgba(219,127,190,0.08), transparent);
+  border-radius:20px;
+  border:1px solid var(--moex-line);
+  padding:20px 0;
+  background:radial-gradient(600px 200px at 50% 0%, var(--moex-panel-a), transparent);
   -webkit-mask-image:linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
   mask-image:linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
 }
-
-.moex-slider-track{
-  display:flex;
-  gap:22px;
+.moex-autoslider-track{
+  display:flex; gap:18px;
   width:max-content;
-  animation:moexSlide 28s linear infinite;
+  animation:moexSlide 26s linear infinite;
 }
-.moex-slider:hover .moex-slider-track{ animation-play-state:paused; }
+.moex-autoslider:hover .moex-autoslider-track{ animation-play-state:paused; }
+@keyframes moexSlide{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
 
-@keyframes moexSlide{
-  0%{ transform:translateX(0); }
-  100%{ transform:translateX(-50%); }
-}
-
-.moex-slide{
-  flex:none;
-  width:150px;
-  text-align:center;
-}
-.moex-slide-img{
-  width:150px; height:150px;
-  border-radius:50%;
+.moex-autoslide-sq{
+  flex:none; width:150px; height:150px;
+  border-radius:16px;
   overflow:hidden;
-  border:2px solid rgba(255,219,218,0.4);
-  box-shadow:0 0 18px rgba(219,127,190,0.2);
+  border:2px solid var(--moex-line);
+  box-shadow:0 0 16px var(--moex-panel-a);
 }
-.moex-slide-img img{ width:100%; height:100%; object-fit:cover; }
-.moex-slide-name{
-  margin-top:10px;
-  font-family:var(--moex-font-mono);
-  font-size:0.75rem;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-  color:var(--moex-dust);
-}
+.moex-autoslide-sq img{ width:100%; height:100%; object-fit:cover; }
 
 /* ============================================================
-   13. FOOTER
+   15. THEME TOGGLE — floating, fixed corner
    ============================================================ */
 
-.moex-footer{
-  margin-top:70px;
-  text-align:center;
-  padding-top:26px;
-  border-top:1px solid rgba(157,163,164,0.15);
+.moex-theme-toggle{
+  position:fixed;
+  bottom:22px; right:22px;
+  z-index:300;
+  width:56px; height:56px;
+  border-radius:50%;
+  border:1px solid var(--moex-line);
+  background:linear-gradient(160deg, var(--moex-panel-b), var(--moex-pink-soft));
+  color:var(--moex-ink);
+  font-size:1.4rem;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  box-shadow:0 10px 28px rgba(147,86,97,0.35);
+  transition:0.3s ease;
 }
-.moex-footer p{
-  font-family:var(--moex-font-mono);
-  font-size:0.7rem;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--moex-slate);
-}
-.moex-footer .moex-halo-dot{
-  display:inline-block;
-  width:5px; height:5px; border-radius:50%;
-  background:var(--moex-orchid);
-  box-shadow:0 0 8px var(--moex-orchid);
-  margin:0 10px;
-}
+.moex-theme-toggle:hover{ transform:translateY(-3px) scale(1.05); box-shadow:0 14px 32px var(--moex-glow); }
+.moex-theme-toggle:active{ transform:scale(0.94); }
 
 /* ============================================================
-   14. RESPONSIVE
+   16. FOOTER
+   ============================================================ */
+
+.moex-footer{ margin-top:70px; text-align:center; padding-top:26px; border-top:1px solid var(--moex-line); }
+.moex-footer p{ font-family:var(--moex-font-mono); font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; color:var(--moex-ink-soft); }
+.moex-footer .moex-halo-dot{ display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--moex-pink); box-shadow:0 0 8px var(--moex-pink); margin:0 10px; }
+
+/* ============================================================
+   17. RESPONSIVE
    ============================================================ */
 
 @media (max-width: 640px){
-  .moex-banner{ height:180px; border-radius:14px; }
+  .moex-banner{ height:180px; border-radius:16px; }
   .moex-header-row{ flex-direction:column; align-items:flex-start; margin-top:-40px; gap:14px; }
   .moex-pfp-wrap, .moex-pfp{ width:110px; height:110px; }
-  .moex-halo-ring{ inset:-14px; }
-  .moex-username{ font-size:1.4rem; }
+  .moex-halo-ring{ inset:-12px; }
+  .moex-username{ font-size:1.6rem; }
   .moex-panel{ padding:20px; }
+  .moex-player{ grid-template-columns:72px 1fr; max-width:100%; }
+  .moex-player-art{ width:72px; height:72px; }
   .moex-series-card{ flex-basis:190px; }
-  .moex-slide, .moex-slide-img{ width:110px; height:110px; }
+  .moex-autoslide-sq{ width:110px; height:110px; }
+  .moex-gallery-sq{ flex-basis:140px; }
+  .moex-theme-toggle{ width:48px; height:48px; bottom:16px; right:16px; font-size:1.2rem; }
 }
 
 </style>
@@ -666,9 +651,11 @@ body.moex-body{
 
 <body class="moex-body">
 
-<!-- DO NOT TOUCH: atmosphere overlays -->
-<div class="moex-grain"></div>
-<div class="moex-scanlines"></div>
+<!-- DO NOT TOUCH: falling sparkles/hearts layer, populated by script at bottom -->
+<div class="moex-fall-layer" id="moexFallLayer"></div>
+
+<!-- Theme toggle — floating, fixed bottom-right -->
+<button class="moex-theme-toggle" id="moexThemeToggle" title="switch vibes" aria-label="Toggle soft/unhinged mode">🩷</button>
 
 <div class="moex-page">
 
@@ -676,7 +663,7 @@ body.moex-body{
   <!-- EDIT ME: change the src="..." below to your own banner image -->
   <div class="moex-banner-wrap">
     <div class="moex-banner">
-      <img src="https://file.garden/ad35P9foF0kAW7I8/Banner.png" alt="Banner">
+      <img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Lightbanner" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Lightbanner" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/darkbanner.png" alt="Banner">
     </div>
 
     <!-- ================= PFP + USERNAME ================= -->
@@ -685,12 +672,12 @@ body.moex-body{
       <div class="moex-pfp-wrap">
         <div class="moex-halo-ring"></div>
         <div class="moex-pfp">
-          <img src="https://file.garden/ad35P9foF0kAW7I8/Pfp.png" alt="Profile picture">
+          <img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Lightpfp" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Lightpfp" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/darkpfp.png" alt="Profile picture">
         </div>
       </div>
       <div class="moex-identity">
         <h1 class="moex-username">@moexran</h1>
-        <p class="moex-subtitle">cyber angel // signal from above</p>
+        <p class="moex-subtitle" id="moexSubtitle">your angel // soft on the surface</p>
       </div>
     </div>
   </div>
@@ -699,82 +686,93 @@ body.moex-body{
   <!-- EDIT ME: copy/delete .moex-tag blocks to change your tags -->
   <div class="moex-tags-row">
     <div class="moex-tag"><span>#</span>angelcore</div>
-    <div class="moex-tag"><span>#</span>cybercore</div>
+    <div class="moex-tag"><span>#</span>hyperfem</div>
     <div class="moex-tag"><span>!</span>writer</div>
-    <div class="moex-tag"><span>!</span>delusioner</div>
-    <div class="moex-tag"><span>#</span>ethereal</div>
+    <div class="moex-tag"><span>!</span>hopelessromantic</div>
+    <div class="moex-tag"><span>#</span>lovergirl</div>
   </div>
 
-  <!-- ================= LIVE STATUS BOX ================= -->
-  <!-- EDIT ME: change the status values on the right of each row -->
-  <div class="moex-panel">
-    <div class="moex-panel-label">status.sys</div>
-    <div class="moex-status-head">
-      <span class="moex-status-title">Live Status</span>
-      <span class="moex-live-badge"><span class="moex-blink-dot"></span>Live</span>
+  <!-- =============== NOW PLAYING (fake spotify, smaller) =============== -->
+  <!-- EDIT ME: change track/artist/times, and the art image -->
+  <a class="moex-player" href="https://open.spotify.com/" target="_blank" rel="noopener">
+    <div class="moex-player-art">
+      <img src="https://file.garden/ad35P9foF0kAW7I8/angelma.jpg" alt="Now playing art">
     </div>
-    <div class="moex-status-row">
-      <span class="moex-status-label">Mood</span>
-      <span class="moex-status-value moex-value-active">floating</span>
+    <div>
+      <div class="moex-player-eyebrow"><span class="moex-pulse"></span>now playing</div>
+      <div class="moex-player-track">Angel</div>
+      <div class="moex-player-artist">Massive Attack</div>
+      <div class="moex-player-bar"><span></span></div>
+      <div class="moex-player-times"><span>1:17</span><span>6.19</span></div>
     </div>
-    <div class="moex-status-row">
-      <span class="moex-status-label">Listening</span>
-      <span class="moex-status-value">Angel - Massive Attack</span>
-    </div>
-    <div class="moex-status-row">
-      <span class="moex-status-label">Currently</span>
-      <span class="moex-status-value">falling in love</span>
-    </div>
-    <div class="moex-status-row">
-      <span class="moex-status-label">Last seen</span>
-      <span class="moex-status-value">behind you</span>
-    </div>
-  </div>
+  </a>
 
   <!-- ================= ABOUT ME + LINKS ================= -->
   <!-- EDIT ME: rewrite the bio text and the link buttons below -->
   <div class="moex-panel">
     <div class="moex-panel-label">about.txt</div>
     <p class="moex-about-text">
-      Hi, I'm <strong>moexran</strong> your digital angel brought to life.
+      hi, i'm <strong>moexran</strong> — your angel, your daydream, and the last thought you have before falling asleep.
+      i write soft things that turn feral halfway through. i promise i'm sweet. i just don't share well.
     </p>
     <div class="moex-links-row">
       <a href="LINK_HERE" class="moex-btn">Discord</a>
       <a href="LINK_HERE" class="moex-btn">Wattpad</a>
       <a href="LINK_HERE" class="moex-btn">AO3</a>
-      <a href="LINK_HERE" class="moex-btn">Jan.AI</a>
+      <a href="LINK_HERE" class="moex-btn">Pinterest</a>
       <a href="LINK_HERE" class="moex-btn">Carrd</a>
+      <a href="LINK_HERE" class="moex-btn">Spotify</a>
     </div>
+  </div>
+
+  <!-- ================= MORE LINKS ================= -->
+  <div class="moex-panel">
+    <div class="moex-panel-label">elsewhere.txt</div>
+    <p class="moex-about-text">find me floating around here too.</p>
+    <div class="moex-links-row">
+      <a href="LINK_HERE" class="moex-btn">Janitor.AI</a>
+      <a href="LINK_HERE" class="moex-btn">Saucepan</a>
+      <a href="LINK_HERE" class="moex-btn">Wyvern</a>
+      <a href="LINK_HERE" class="moex-btn">Charsnap</a>
+    </div>
+  </div>
+
+  <!-- ================= MEDIA SLIDER (manual, squares) ================= -->
+  <h2 class="moex-section-title"><span class="moex-halo-dot"></span>Gallery</h2>
+  <div class="moex-gallery moex-hscroll">
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light1.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light1.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/Dark1.png" alt="Gallery photo 1"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light2.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light2.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark2.jpg" alt="Gallery photo 2"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light3.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light3.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark3.jpg" alt="Gallery photo 3"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light4.jpg" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light4.jpg" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark4.jpg" alt="Gallery photo 4"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light5.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light5.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark5.jpg" alt="Gallery photo 5"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light6.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light6.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark6.jpg" alt="Gallery photo 6"></div>
   </div>
 
   <!-- ================= DROPDOWNS ================= -->
   <!-- EDIT ME: duplicate/edit the <details> blocks to add more dropdowns -->
+  <h2 class="moex-section-title moex-title-swap" id="moexAngelTitle" data-alt="Your Obsession"><span class="moex-halo-dot"></span>Your Angel</h2>
   <div class="moex-panel">
-    <div class="moex-panel-label">notes.dir</div>
-
     <details class="moex-dropdown">
       <summary>Rules / Etiquette</summary>
       <div class="moex-dropdown-content">
-        MDNI. Lorem ipsum dolor sit amet...
+        Be sweet to me and I'll be sweet back. MDNI. Lorem ipsum dolor sit amet, edit this text with your real rules.
       </div>
     </details>
-
     <details class="moex-dropdown">
       <summary>FAQ</summary>
       <div class="moex-dropdown-content">
-        Fem. SEA. Lorem ipsum dolor sit amet...
+        Fem. SEA. Lorem ipsum dolor sit amet — swap this for your actual frequently asked questions.
       </div>
     </details>
-
     <details class="moex-dropdown">
       <summary>Credits</summary>
       <div class="moex-dropdown-content">
-        Lorem ipsum
+        Template hand-coded with love (and a little bit of unhinged). Fonts via Google Fonts, images via placehold.co.
       </div>
     </details>
   </div>
 
-  <!-- ================= TERMINAL FEED ================= -->
+  <!-- ================= SCROLLING TERMINAL FEED ================= -->
   <!-- EDIT ME: copy/delete .moex-term-msg lines to change the feed -->
   <div class="moex-terminal">
     <div class="moex-term-head">
@@ -784,18 +782,18 @@ body.moex-body{
     <div class="moex-term-window">
       <div class="moex-term-feed">
         <div class="moex-term-msg"><span class="moex-term-time">[00:01]</span><span class="moex-term-user">MOE:</span>fall for me... or fall with me.</div>
-        <div class="moex-term-msg"><span class="moex-term-time">[00:02]</span><span class="moex-term-user">MOE:</span>love me love me love me love me love me.</div>
-        <div class="moex-term-msg"><span class="moex-term-time">[00:03]</span><span class="moex-term-user">MOE:</span>I can be everything you want.</div>
-        <div class="moex-term-msg"><span class="moex-term-time">[00:04]</span><span class="moex-term-user">MOE:</span>unfortunately for you, I move on as easily as I fall in love.</div>
-        <div class="moex-term-msg"><span class="moex-term-time">[00:05]</span><span class="moex-term-user">MOE:</span>be careful with my heart... I've already fallen from heaven for you.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:02]</span><span class="moex-term-user">MOE:</span>love me love me love me love me love me. I'll do anything.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:03]</span><span class="moex-term-user">MOE:</span>i promise i'm normal about you. mostly.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:04]</span><span class="moex-term-user">MOE:</span>be careful with my heart, I've already fallen from heaven for you.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:05]</span><span class="moex-term-user">MOE:</span>I'm not obsessed, I'm just... very, very interested.</div>
         <!-- DO NOT TOUCH: this second copy of the messages is what makes the
              scroll loop seamless. If you add/remove lines above, copy the
              exact same change down here too. -->
         <div class="moex-term-msg"><span class="moex-term-time">[00:01]</span><span class="moex-term-user">MOE:</span>fall for me... or fall with me.</div>
         <div class="moex-term-msg"><span class="moex-term-time">[00:02]</span><span class="moex-term-user">MOE:</span>love me love me love me love me love me.</div>
-        <div class="moex-term-msg"><span class="moex-term-time">[00:03]</span><span class="moex-term-user">MOE:</span>I can be everything you want.</div>
-        <div class="moex-term-msg"><span class="moex-term-time">[00:04]</span><span class="moex-term-user">MOE:</span>unfortunately for you, I move on as easily as I fall in love.</div>
-        <div class="moex-term-msg"><span class="moex-term-time">[00:05]</span><span class="moex-term-user">MOE:</span>be careful with my heart... I've already fallen from heaven for you.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:03]</span><span class="moex-term-user">MOE:</span>i promise i'm normal about you. mostly.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:04]</span><span class="moex-term-user">MOE:</span>be careful with my heart, i've already fallen from heaven for you.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:05]</span><span class="moex-term-user">MOE:</span>you're not obsessed, you're just... very, very interested.</div>
       </div>
     </div>
   </div>
@@ -806,23 +804,22 @@ body.moex-body{
   <div class="moex-series-scroll moex-hscroll">
 
     <div class="moex-series-card">
-      <div class="moex-series-banner"><img src="https://file.garden/aUAeTbuhVTep8VtJ/mine/academy.png" alt="Series banner"></div>
+      <div class="moex-series-banner"><img src="https://placehold.co/400x200/FAE9D7/935661?text=Summerset" alt="Series banner"></div>
       <div class="moex-series-body">
         <h3 class="moex-series-title">Summerset University</h3>
         <p class="moex-series-desc">Summerset is both a dream and a battlefield. You don't just get in... you survive.</p>
         <div class="moex-series-genres">
           <span class="moex-series-genre">Romance</span>
-          <span class="moex-series-genre">University</span>
         </div>
         <div class="moex-series-links">
-          <a href="https://summerset-university.my.canva.site/summerset" class="moex-series-btn">Website</a>
-          <a href="https://janitorai.com/search?mode=all&sort=popular&custom_tags=summersetuniversity&page=1" class="moex-series-btn">Jan.AI</a>
+          <a href="LINK_HERE" class="moex-series-btn">Website</a>
+          <a href="LINK_HERE" class="moex-series-btn">Jan.AI</a>
         </div>
       </div>
     </div>
 
     <div class="moex-series-card">
-      <div class="moex-series-banner"><img src="https://file.garden/aUAeTbuhVTep8VtJ/mine/wallpaper.png" alt="Series banner"></div>
+      <div class="moex-series-banner"><img src="https://placehold.co/400x200/FBB6C4/935661?text=Devil%27s+Angel" alt="Series banner"></div>
       <div class="moex-series-body">
         <h3 class="moex-series-title">The Devil's Angel</h3>
         <p class="moex-series-desc">They say devils don't need saving. But what if he was begging for it behind a heart that forgot how to hope?</p>
@@ -831,14 +828,14 @@ body.moex-body{
           <span class="moex-series-genre">Dead Dove</span>
         </div>
         <div class="moex-series-links">
-          <a href="https://www.wattpad.com/story/366543079-the-devil%27s-angel-the-wattys-2025" class="moex-series-btn">Wattpad</a>
-          <a href="https://janitorai.com/search?mode=all&sort=popular&custom_tags=thedevilsangel&page=1" class="moex-series-btn">Jan.AI</a>
+          <a href="LINK_HERE" class="moex-series-btn">Wattpad</a>
+          <a href="LINK_HERE" class="moex-series-btn">Jan.AI</a>
         </div>
       </div>
     </div>
 
     <div class="moex-series-card">
-      <div class="moex-series-banner"><img src="https://placehold.co/400x200/1a0f14/9DA3A4?text=placeholder" alt="Series banner"></div>
+      <div class="moex-series-banner"><img src="https://placehold.co/400x200/F7A0B8/FAF5EC?text=Springrise" alt="Series banner"></div>
       <div class="moex-series-body">
         <h3 class="moex-series-title">Springrise County</h3>
         <p class="moex-series-desc">A short description of this series goes here — what it's about, tone, updates.</p>
@@ -853,10 +850,10 @@ body.moex-body{
     </div>
 
     <div class="moex-series-card">
-      <div class="moex-series-banner"><img src="https://placehold.co/400x200/1a0f14/604D53?text=placeholder" alt="Series banner"></div>
+      <div class="moex-series-banner"><img src="https://placehold.co/400x200/FAE9D7/935661?text=Kings" alt="Series banner"></div>
       <div class="moex-series-body">
         <h3 class="moex-series-title">Kings (COD:MW)</h3>
-        <p class="moex-series-desc">Fanfic collections set in the Call of Duty: Modern Warfare universe</p>
+        <p class="moex-series-desc">Fanfic collection set in the Call of Duty: Modern Warfare universe.</p>
         <div class="moex-series-genres">
           <span class="moex-series-genre">Angst</span>
           <span class="moex-series-genre">Adventure</span>
@@ -870,48 +867,24 @@ body.moex-body{
 
   </div>
 
-  <!-- ================= SONA SLIDER ================= -->
-  <!-- EDIT ME: swap image src + names. If you change how many sonas you
-       have, duplicate the FULL set of .moex-slide blocks twice, same as
-       below — that's what keeps the auto-scroll looking seamless. -->
-  <h2 class="moex-section-title"><span class="moex-halo-dot"></span>Yours</h2>
-  <div class="moex-slider">
-    <div class="moex-slider-track">
+  <!-- ================= AUTO-SLIDING MEDIA SLIDER (squares) ================= -->
+  <!-- EDIT ME: swap image src links. If you change how many photos you
+       have, duplicate the FULL set of .moex-autoslide-sq blocks twice,
+       same as below — that's what keeps the auto-scroll seamless. -->
+  <h2 class="moex-section-title"><span class="moex-halo-dot"></span>Yours.</h2>
+  <div class="moex-autoslider">
+    <div class="moex-autoslider-track">
 
-      <div class="moex-slide">
-        <div class="moex-slide-img"><img src="https://file.garden/ad35P9foF0kAW7I8/1.png" alt="Sona"></div>
-        <p class="moex-slide-name">Yours.</p>
-      </div>
-      <div class="moex-slide">
-        <div class="moex-slide-img"><img src="https://file.garden/ad35P9foF0kAW7I8/2.png" alt="Sona"></div>
-        <p class="moex-slide-name">Yours.</p>
-      </div>
-      <div class="moex-slide">
-        <div class="moex-slide-img"><img src="https://file.garden/ad35P9foF0kAW7I8/3.png" alt="Sona"></div>
-        <p class="moex-slide-name">Yours.</p>
-      </div>
-      <div class="moex-slide">
-        <div class="moex-slide-img"><img src="https://file.garden/ad35P9foF0kAW7I8/4.png" alt="Sona"></div>
-        <p class="moex-slide-name">Yours.</p>
-      </div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/F7A0B8/FAF5EC?text=1" data-light-src="https://placehold.co/300x300/F7A0B8/FAF5EC?text=1" data-dark-src="https://placehold.co/300x300/07080A/935661?text=1" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/FBB6C4/935661?text=2" data-light-src="https://placehold.co/300x300/FBB6C4/935661?text=2" data-dark-src="https://placehold.co/300x300/14090c/F0EADC?text=2" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/FAE9D7/935661?text=3" data-light-src="https://placehold.co/300x300/FAE9D7/935661?text=3" data-dark-src="https://placehold.co/300x300/07080A/935661?text=3" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/935661/F0EADC?text=4" data-light-src="https://placehold.co/300x300/935661/F0EADC?text=4" data-dark-src="https://placehold.co/300x300/14090c/F0EADC?text=4" alt="Media"></div>
 
       <!-- DO NOT TOUCH: duplicate set for the seamless loop -->
-      <div class="moex-slide">
-        <div class="moex-slide-img"><img src="https://file.garden/ad35P9foF0kAW7I8/1.png" alt="Sona"></div>
-        <p class="moex-slide-name">Yours.</p>
-      </div>
-      <div class="moex-slide">
-        <div class="moex-slide-img"><img src="https://file.garden/ad35P9foF0kAW7I8/2.png" alt="Sona"></div>
-        <p class="moex-slide-name">Yours.</p>
-      </div>
-      <div class="moex-slide">
-        <div class="moex-slide-img"><img src="https://file.garden/ad35P9foF0kAW7I8/3.png" alt="Sona"></div>
-        <p class="moex-slide-name">Yours.</p>
-      </div>
-      <div class="moex-slide">
-        <div class="moex-slide-img"><img src="https://file.garden/ad35P9foF0kAW7I8/4.png" alt="Sona"></div>
-        <p class="moex-slide-name">Yours.</p>
-      </div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/F7A0B8/FAF5EC?text=1" data-light-src="https://placehold.co/300x300/F7A0B8/FAF5EC?text=1" data-dark-src="https://placehold.co/300x300/07080A/935661?text=1" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/FBB6C4/935661?text=2" data-light-src="https://placehold.co/300x300/FBB6C4/935661?text=2" data-dark-src="https://placehold.co/300x300/14090c/F0EADC?text=2" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/FAE9D7/935661?text=3" data-light-src="https://placehold.co/300x300/FAE9D7/935661?text=3" data-dark-src="https://placehold.co/300x300/07080A/935661?text=3" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/935661/F0EADC?text=4" data-light-src="https://placehold.co/300x300/935661/F0EADC?text=4" data-dark-src="https://placehold.co/300x300/14090c/F0EADC?text=4" alt="Media"></div>
 
     </div>
   </div>
@@ -922,6 +895,101 @@ body.moex-body{
   </div>
 
 </div>
+
+<!-- ============================================================
+     SCRIPT — theme toggle, falling sparkles, and the little
+     "mask slipping" hover swap on the Your Angel title.
+     DO NOT TOUCH unless you know what you're doing.
+     ============================================================ -->
+<script>
+(function(){
+
+  /* ---- THEME TOGGLE ---- */
+  var body = document.body;
+  var toggle = document.getElementById('moexThemeToggle');
+  var subtitle = document.getElementById('moexSubtitle');
+  var STORAGE_KEY = 'moex-theme';
+
+  /* Images that should swap between modes carry class "moex-theme-img"
+     plus data-light-src / data-dark-src attributes. Add those two
+     attributes to any new image (banner, pfp, gallery, slider) and it
+     will automatically swap when the button is clicked. */
+  var themeImages = document.querySelectorAll('.moex-theme-img');
+
+  function applyTheme(mode){
+    if(mode === 'dark'){
+      body.classList.add('moex-dark');
+      toggle.textContent = '🖤';
+      subtitle.textContent = 'your angel // unhinged in the back';
+    } else {
+      body.classList.remove('moex-dark');
+      toggle.textContent = '🩷';
+      subtitle.textContent = 'your angel // soft on the surface';
+    }
+
+    themeImages.forEach(function(img){
+      var next = mode === 'dark' ? img.getAttribute('data-dark-src') : img.getAttribute('data-light-src');
+      if(next && img.getAttribute('src') !== next){ img.setAttribute('src', next); }
+    });
+  }
+
+  var saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch(e) { /* storage unavailable, ignore */ }
+  applyTheme(saved === 'dark' ? 'dark' : 'light');
+
+  toggle.addEventListener('click', function(){
+    var goingDark = !body.classList.contains('moex-dark');
+    applyTheme(goingDark ? 'dark' : 'light');
+    try { localStorage.setItem(STORAGE_KEY, goingDark ? 'dark' : 'light'); } catch(e) { /* ignore */ }
+  });
+
+  /* ---- "Your Angel" -> "Your Obsession" hover swap ---- */
+  var angelTitle = document.getElementById('moexAngelTitle');
+  if(angelTitle){
+    var original = angelTitle.lastChild;
+    var altText = angelTitle.getAttribute('data-alt');
+    var originalText = null;
+    // grab the actual text node (last child, after the halo dot span)
+    for (var i = angelTitle.childNodes.length - 1; i >= 0; i--){
+      if (angelTitle.childNodes[i].nodeType === 3 && angelTitle.childNodes[i].textContent.trim().length){
+        originalText = angelTitle.childNodes[i];
+        break;
+      }
+    }
+    if(originalText){
+      var baseText = originalText.textContent;
+      angelTitle.addEventListener('mouseenter', function(){ originalText.textContent = altText; });
+      angelTitle.addEventListener('mouseleave', function(){ originalText.textContent = baseText; });
+    }
+  }
+
+  /* ---- FALLING SPARKLES + HEARTS ---- */
+  var layer = document.getElementById('moexFallLayer');
+  var symbols = ['♡','✧','⋆','✦','💗'];
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(!reduceMotion && layer){
+    var COUNT = 22;
+    for(var n = 0; n < COUNT; n++){
+      var bit = document.createElement('span');
+      bit.className = 'moex-fall-bit';
+      bit.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      var left = Math.random() * 100;
+      var size = 10 + Math.random() * 16;
+      var duration = 9 + Math.random() * 10;
+      var delay = Math.random() * -20;
+      var sway = (Math.random() * 80 - 40) + 'px';
+      bit.style.left = left + 'vw';
+      bit.style.fontSize = size + 'px';
+      bit.style.animationDuration = duration + 's';
+      bit.style.animationDelay = delay + 's';
+      bit.style.setProperty('--moex-sway', sway);
+      layer.appendChild(bit);
+    }
+  }
+
+})();
+</script>
 
 </body>
 </html>
