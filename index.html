@@ -3,1420 +3,995 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>МАКАРОВ — Personal File // filed by A.</title>
-<meta name="description" content="A classified personal dossier. Filed by Angel.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Black+Ops+One&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<title>@moexran — your angel</title>
+
 <style>
-/* ================================================
-   MOEX — root tokens
-   ================================================ */
+
+/* ============================================================
+   0. FONTS + COLOR TOKENS
+   (DO NOT TOUCH the @import. You CAN edit the hex values below
+   to retune the palette — everything on the page pulls from
+   these variables.)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Quicksand:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
 :root{
-  --moex-void:#0a0806;
-  --moex-paper:#151009;
-  --moex-paper-2:#1c150d;
-  --moex-blood:#7a0e0e;
-  --moex-blood-bright:#c41818;
-  --moex-brass:#ab8a52;
-  --moex-brass-dim:#6e5a37;
-  --moex-bone:#e9dfcd;
-  --moex-bone-dim:#a89d89;
-  --moex-ash:#4d463c;
-  --moex-rose:#d9a0a0;
-  --moex-shadow: rgba(0,0,0,.6);
-  --moex-font-display:'Cinzel', serif;
-  --moex-font-stencil:'Black Ops One', sans-serif;
-  --moex-font-body:'Cormorant Garamond', serif;
-  --moex-font-mono:'Share Tech Mono', monospace;
+  /* ---- SOFT MODE (default) : lover-girl on the front ---- */
+  --moex-bg:        #FAF5EC;   /* page background            */
+  --moex-bg-alt:    #FAE9D7;   /* panel / card background    */
+  --moex-pink:      #F7A0B8;   /* primary accent             */
+  --moex-pink-soft: #FBB6C4;   /* secondary accent / hover   */
+  --moex-ink:       #935661;   /* main text (doubles as the  */
+                                /* dark-mode bg — the bridge  */
+                                /* color between both modes)  */
+  --moex-ink-soft:  rgba(147,86,97,0.65);  /* secondary text  */
+  --moex-line:      rgba(147,86,97,0.22);  /* borders         */
+  --moex-glow:      rgba(247,160,184,0.45);/* soft pink glow  */
+  --moex-panel-a:   rgba(247,160,184,0.14);
+  --moex-panel-b:   rgba(255,255,255,0.55);
+
+  --moex-font-display: 'Cormorant Garamond', serif;
+  --moex-font-body:    'Quicksand', sans-serif;
+  --moex-font-mono:    'Space Mono', monospace;
+
+  color-scheme: light;
 }
 
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-::selection{background:var(--moex-blood-bright);color:var(--moex-bone);}
+/* ---- UNHINGED MODE (toggled) : yandere in the back ---- */
+body.moex-dark{
+  --moex-bg:        #07080A;
+  --moex-bg-alt:    #14090c;
+  --moex-pink:      #935661;
+  --moex-pink-soft: #b97e88;
+  --moex-ink:       #F0EADC;
+  --moex-ink-soft:  rgba(240,234,220,0.62);
+  --moex-line:      rgba(147,86,97,0.45);
+  --moex-glow:      rgba(147,86,97,0.55);
+  --moex-panel-a:   rgba(147,86,97,0.16);
+  --moex-panel-b:   rgba(0,0,0,0.55);
+  color-scheme: dark;
+}
 
-body{
-  margin:0;
-  background:var(--moex-void);
-  color:var(--moex-bone);
-  font-family:var(--moex-font-body);
+/* ============================================================
+   1. GLOBAL RESET + ATMOSPHERE
+   (DO NOT TOUCH — builds the ambient gradient behind the page
+   and handles the smooth crossfade between the two modes)
+   ============================================================ */
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+
+body.moex-body{
+  background:
+    radial-gradient(1100px 550px at 50% -10%, var(--moex-panel-a), transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, var(--moex-glow), transparent 55%),
+    var(--moex-bg);
+  color: var(--moex-ink);
+  font-family: var(--moex-font-body);
+  min-height:100vh;
+  position:relative;
   overflow-x:hidden;
+  transition: background-color 0.6s ease, color 0.6s ease;
+}
+
+.moex-page{
+  max-width:1080px;
+  margin:0 auto;
+  padding: 40px 24px 90px;
   position:relative;
+  z-index:1;
 }
 
-body.moex-fine-pointer{cursor:none;}
+::selection{ background:var(--moex-pink); color:var(--moex-bg); }
 
-a{color:inherit;text-decoration:none;}
-img{max-width:100%;display:block;}
-button{font-family:inherit;}
+/* custom scrollbars for every horizontal-scroll strip on the page */
+.moex-hscroll::-webkit-scrollbar{ height:8px; }
+.moex-hscroll::-webkit-scrollbar-track{ background:var(--moex-panel-a); border-radius:10px; }
+.moex-hscroll::-webkit-scrollbar-thumb{ background:var(--moex-pink); border-radius:10px; }
+.moex-hscroll::-webkit-scrollbar-thumb:hover{ background:var(--moex-pink-soft); }
 
-/* film grain + scanlines */
-.moex-grain{
-  position:fixed;inset:0;pointer-events:none;z-index:9000;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/></svg>");
-  mix-blend-mode:overlay;opacity:.5;
-}
-.moex-scanlines{
-  position:fixed;inset:0;pointer-events:none;z-index:9001;
-  background:repeating-linear-gradient(to bottom, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px);
-  animation:moex-flicker 6s infinite;
-}
-@keyframes moex-flicker{
-  0%,97%,100%{opacity:.35;}
-  98%{opacity:.15;}
-  99%{opacity:.5;}
-}
+/* ============================================================
+   2. FALLING SPARKLES + HEARTS
+   (DO NOT TOUCH — populated by the script at the bottom of the
+   page. Purely decorative, ignores clicks.)
+   ============================================================ */
 
-/* custom crosshair cursor */
-.moex-cursor{
-  position:fixed;top:0;left:0;width:26px;height:26px;pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);transition:width .15s,height .15s,opacity .2s;
-  opacity:0;
-}
-.moex-cursor.moex-active{opacity:1;}
-.moex-cursor::before,.moex-cursor::after{
-  content:"";position:absolute;background:var(--moex-blood-bright);
-}
-.moex-cursor::before{top:50%;left:0;width:100%;height:1px;transform:translateY(-50%);}
-.moex-cursor::after{left:50%;top:0;width:1px;height:100%;transform:translateX(-50%);}
-.moex-cursor .moex-ring{
-  position:absolute;inset:0;border:1px solid rgba(196,24,24,.7);border-radius:50%;
-}
-.moex-cursor.moex-hover{width:46px;height:46px;}
-.moex-cursor.moex-hover::before,.moex-cursor.moex-hover::after{background:var(--moex-brass);}
-
-/* ================================================
-   NAV
-   ================================================ */
-.moex-nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  display:flex;justify-content:center;gap:2px;
-  padding:10px 10px 0;
-  background:linear-gradient(to bottom, rgba(10,8,6,.95), rgba(10,8,6,0));
+.moex-fall-layer{
+  position:fixed; inset:0;
   pointer-events:none;
-}
-.moex-nav-inner{
-  pointer-events:all;
-  display:flex;gap:0;background:var(--moex-paper);
-  border:1px solid var(--moex-ash);border-bottom:none;
-  box-shadow:0 4px 24px var(--moex-shadow);
-}
-.moex-nav a{
-  font-family:var(--moex-font-mono);
-  font-size:.68rem;letter-spacing:.14em;
-  color:var(--moex-bone-dim);
-  padding:12px 16px;
-  border-right:1px solid var(--moex-ash);
-  text-transform:uppercase;
-  position:relative;
-  transition:color .25s, background .25s;
-  white-space:nowrap;
-}
-.moex-nav a:last-child{border-right:none;}
-.moex-nav a::before{
-  content:"";position:absolute;bottom:0;left:0;width:100%;height:2px;
-  background:var(--moex-blood-bright);transform:scaleX(0);transform-origin:left;
-  transition:transform .3s;
-}
-.moex-nav a:hover, .moex-nav a.moex-active{color:var(--moex-bone);background:rgba(122,14,14,.15);}
-.moex-nav a:hover::before, .moex-nav a.moex-active::before{transform:scaleX(1);}
-
-/* ================================================
-   HERO
-   ================================================ */
-.moex-hero{
-  min-height:100vh;position:relative;overflow:hidden;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:120px 20px 60px;
-  background:
-    radial-gradient(ellipse at 50% 20%, rgba(122,14,14,.18), transparent 60%),
-    radial-gradient(ellipse at 50% 100%, rgba(122,14,14,.12), transparent 55%),
-    var(--moex-void);
-}
-.moex-radar{
-  position:absolute;top:50%;left:50%;width:1200px;height:1200px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  border:1px solid rgba(171,138,82,.15);
-  opacity:.5;
-}
-.moex-radar::before,.moex-radar::after{
-  content:"";position:absolute;border-radius:50%;border:1px solid rgba(171,138,82,.12);
-}
-.moex-radar::before{inset:120px;}
-.moex-radar::after{inset:280px;}
-.moex-radar-sweep{
-  position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(from 0deg, rgba(196,24,24,.35), transparent 20%);
-  animation:moex-spin 6s linear infinite;
-  mix-blend-mode:screen;
-}
-@keyframes moex-spin{to{transform:rotate(360deg);}}
-
-.moex-eyebrow{
-  font-family:var(--moex-font-mono);font-size:.72rem;letter-spacing:.35em;
-  color:var(--moex-brass);text-transform:uppercase;margin-bottom:18px;
-  z-index:2;
-}
-.moex-hero h1{
-  font-family:var(--moex-font-stencil);
-  font-size:clamp(3rem,11vw,8.5rem);
-  line-height:.95;margin:0;z-index:2;
-  color:var(--moex-bone);
-  letter-spacing:.02em;
-  text-shadow:0 0 40px rgba(196,24,24,.45), 0 0 100px rgba(196,24,24,.15);
-}
-.moex-hero h1 span{color:var(--moex-blood-bright);}
-.moex-hero-sub{
-  font-family:var(--moex-font-display);font-weight:600;
-  font-size:clamp(1rem,2.4vw,1.4rem);letter-spacing:.08em;
-  color:var(--moex-bone-dim);margin-top:18px;z-index:2;
-  max-width:600px;
-}
-.moex-hero-file{
-  margin-top:34px;font-family:var(--moex-font-mono);font-size:.78rem;
-  color:var(--moex-brass);letter-spacing:.1em;z-index:2;
-  border-top:1px solid var(--moex-ash);border-bottom:1px solid var(--moex-ash);
-  padding:10px 0;min-height:1.4em;
-}
-.moex-hero-file .moex-cursor-blink{animation:moex-blink 1s step-end infinite;}
-@keyframes moex-blink{50%{opacity:0;}}
-
-.moex-scrolldown{
-  z-index:2;margin-top:50px;font-family:var(--moex-font-mono);
-  font-size:.65rem;letter-spacing:.3em;color:var(--moex-bone-dim);
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-}
-.moex-scrolldown span{width:1px;height:34px;background:linear-gradient(var(--moex-brass),transparent);
-  animation:moex-pulse-down 1.8s infinite;}
-@keyframes moex-pulse-down{0%{opacity:0;}50%{opacity:1;}100%{opacity:0;}}
-
-/* ticker */
-.moex-ticker{
-  position:relative;width:100%;overflow:hidden;
-  background:var(--moex-paper);border-top:1px solid var(--moex-ash);border-bottom:1px solid var(--moex-ash);
-  padding:8px 0;
-}
-.moex-ticker-track{
-  display:inline-flex;white-space:nowrap;
-  font-family:var(--moex-font-mono);font-size:.72rem;letter-spacing:.08em;
-  color:var(--moex-brass-dim);
-  animation:moex-marquee 32s linear infinite;
-}
-.moex-ticker-track span{padding:0 2.2em;}
-@keyframes moex-marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-
-/* ================================================
-   SECTION SHELL
-   ================================================ */
-.moex-section{
-  padding:110px 20px 100px;max-width:1100px;margin:0 auto;position:relative;
-}
-.moex-tag{
-  font-family:var(--moex-font-mono);font-size:.7rem;letter-spacing:.3em;
-  color:var(--moex-blood-bright);text-transform:uppercase;
-  display:inline-flex;align-items:center;gap:10px;margin-bottom:16px;
-}
-.moex-tag::before{content:"";width:26px;height:1px;background:var(--moex-blood-bright);}
-.moex-h2{
-  font-family:var(--moex-font-display);font-weight:700;
-  font-size:clamp(2rem,4.2vw,3.2rem);margin:0 0 30px;color:var(--moex-bone);
-}
-.moex-stamp{
-  position:absolute;top:60px;right:20px;
-  font-family:var(--moex-font-stencil);font-size:.85rem;color:var(--moex-blood-bright);
-  border:3px solid var(--moex-blood-bright);padding:10px 16px;
-  transform:rotate(9deg);opacity:.75;letter-spacing:.08em;
-  mix-blend-mode:screen;
-}
-
-/* ================================================
-   DOSSIER / BIOGRAPHY
-   ================================================ */
-.moex-dossier-grid{
-  display:grid;grid-template-columns:1.4fr 1fr;gap:50px;align-items:start;
-}
-@media(max-width:820px){.moex-dossier-grid{grid-template-columns:1fr;}}
-
-.moex-bio p{font-size:1.22rem;line-height:1.75;color:var(--moex-bone-dim);}
-.moex-bio p:first-of-type::first-letter{
-  font-family:var(--moex-font-display);font-size:3.4rem;color:var(--moex-blood-bright);
-  float:left;line-height:.8;padding-right:10px;padding-top:6px;
-}
-.moex-redacted{
-  background:var(--moex-bone);color:var(--moex-bone);
-  padding:0 4px;cursor:pointer;border-radius:1px;
-  transition:background .35s, color .1s;
-  box-shadow:0 0 0 1px rgba(0,0,0,.2) inset;
-}
-.moex-redacted.moex-revealed{
-  background:transparent;color:var(--moex-blood-bright);font-style:italic;
-}
-.moex-hint{font-family:var(--moex-font-mono);font-size:.7rem;color:var(--moex-ash);letter-spacing:.05em;margin-top:6px;}
-
-.moex-statcard{
-  background:var(--moex-paper);border:1px solid var(--moex-ash);padding:26px;
-}
-.moex-statcard h3{
-  font-family:var(--moex-font-mono);font-size:.75rem;letter-spacing:.2em;
-  color:var(--moex-brass);text-transform:uppercase;margin:0 0 20px;
-  border-bottom:1px solid var(--moex-ash);padding-bottom:12px;
-}
-.moex-stat-row{margin-bottom:16px;}
-.moex-stat-label{
-  display:flex;justify-content:space-between;font-family:var(--moex-font-mono);
-  font-size:.72rem;color:var(--moex-bone-dim);margin-bottom:6px;letter-spacing:.05em;
-}
-.moex-stat-track{height:6px;background:var(--moex-void);border:1px solid var(--moex-ash);overflow:hidden;}
-.moex-stat-fill{
-  height:100%;width:0;background:linear-gradient(90deg,var(--moex-blood),var(--moex-blood-bright));
-  transition:width 1.4s cubic-bezier(.2,.7,.2,1);
-}
-.moex-stat-row.moex-in-view .moex-stat-fill{width:var(--moex-val);}
-
-.moex-fieldnote{
-  margin-top:24px;padding-top:20px;border-top:1px dashed var(--moex-ash);
-  font-family:var(--moex-font-body);font-style:italic;color:var(--moex-rose);font-size:1.05rem;
-}
-
-/* ================================================
-   STAMPCARD (imported from Brown template)
-   ================================================ */
-.moex-stampcard{
-  max-width:560px;margin:0 auto 46px;
-  border:1px solid var(--moex-brass);
-  padding:22px 26px;
-  background:rgba(21,16,9,.6);
-  font-family:var(--moex-font-mono);font-size:.8rem;
-}
-.moex-stampcard-row{
-  display:flex;justify-content:space-between;gap:16px;
-  padding:8px 0;border-bottom:1px dashed var(--moex-ash);
-}
-.moex-stampcard-row:last-child{border-bottom:none;}
-.moex-stampcard-key{color:var(--moex-bone-dim);letter-spacing:.08em;}
-
-.moex-redact{
-  background:#050403;color:transparent;padding:0 6px;border-radius:1px;
-  cursor:pointer;user-select:none;
-  transition:background .35s ease,color .1s ease .1s;
-  border:1px solid rgba(233,221,199,.08);
-}
-.moex-redact.moex-revealed{background:transparent;color:var(--moex-brass);border-color:transparent;font-style:italic;}
-
-/* ================================================
-   DOSSIER TABS (imported from Brown template)
-   ================================================ */
-.moex-tabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 0 34px;}
-.moex-tabbtn{
-  font-family:var(--moex-font-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
-  background:transparent;border:1px solid var(--moex-ash);color:var(--moex-bone-dim);
-  padding:10px 18px;cursor:pointer;transition:all .25s;
-}
-.moex-tabbtn:hover{border-color:var(--moex-blood-bright);color:var(--moex-bone);}
-.moex-tabbtn.moex-active{background:rgba(122,14,14,.28);border-color:var(--moex-blood-bright);color:var(--moex-bone);}
-
-.moex-tabpanel{display:none;max-width:760px;margin:0 auto;}
-.moex-tabpanel.moex-active{display:block;animation:moexFadeTab .5s ease;}
-@keyframes moexFadeTab{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-
-.moex-file{
-  border:1px solid var(--moex-ash);
-  background:linear-gradient(180deg,rgba(28,21,13,.7),rgba(10,8,6,.5));
-  padding:34px;position:relative;
-}
-.moex-file::before{
-  content:attr(data-stamp);position:absolute;top:14px;right:18px;
-  font-family:var(--moex-font-mono);font-size:.68rem;color:var(--moex-blood-bright);
-  letter-spacing:.14em;opacity:.85;transform:rotate(4deg);
-  border:1px solid var(--moex-blood-bright);padding:3px 8px;
-}
-.moex-file p{margin:0 0 14px;font-size:1.1rem;line-height:1.7;color:var(--moex-bone-dim);}
-.moex-file p:last-child{margin-bottom:0;}
-.moex-file em{color:var(--moex-rose);font-style:italic;}
-
-/* ================================================
-   EVIDENCE WALL (imported from Brown template)
-   ================================================ */
-.moex-wall{
-  position:relative;max-width:960px;margin:0 auto;height:620px;
-  background:
-    repeating-linear-gradient(0deg, rgba(233,221,199,.03) 0 2px, transparent 2px 40px),
-    repeating-linear-gradient(90deg, rgba(233,221,199,.03) 0 2px, transparent 2px 40px),
-    var(--moex-paper-2);
-  border:1px solid var(--moex-ash);
-}
-.moex-wall svg.moex-strings{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
-.moex-wall svg.moex-strings path{
-  stroke:var(--moex-blood-bright);stroke-width:1.4;fill:none;opacity:.55;
-  filter:drop-shadow(0 0 2px rgba(196,24,24,.5));
-}
-.moex-pin{
-  position:absolute;width:168px;background:var(--moex-bone);color:#2a221b;
-  padding:14px 12px 16px;box-shadow:0 10px 20px rgba(0,0,0,.5);
-  font-family:var(--moex-font-mono);font-size:.7rem;text-align:center;
-  cursor:pointer;transition:transform .25s ease, box-shadow .25s ease;border:none;
-}
-.moex-pin:hover,.moex-pin:focus-visible{transform:translateY(-6px) scale(1.03) !important;box-shadow:0 18px 30px rgba(0,0,0,.6);z-index:10;}
-.moex-pin::before{
-  content:"";position:absolute;top:-7px;left:50%;transform:translateX(-50%);
-  width:12px;height:12px;border-radius:50%;
-  background:radial-gradient(circle at 35% 35%, #e66, var(--moex-blood));
-  box-shadow:0 2px 4px rgba(0,0,0,.6);
-}
-.moex-pin-art{height:96px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;background:#d9cdb2;}
-.moex-pin-art svg{width:52px;height:52px;}
-.moex-pin-cap{color:#4a3c2c;line-height:1.4;letter-spacing:.03em;}
-
-.moex-pin.p1{top:4%;left:4%;transform:rotate(-4deg);}
-.moex-pin.p2{top:8%;left:34%;transform:rotate(3deg);}
-.moex-pin.p3{top:2%;left:63%;transform:rotate(-2deg);}
-.moex-pin.p4{top:42%;left:12%;transform:rotate(2deg);}
-.moex-pin.p5{top:46%;left:42%;transform:rotate(-3deg);}
-.moex-pin.p6{top:40%;left:71%;transform:rotate(4deg);}
-.moex-pin.p7{top:78%;left:24%;transform:rotate(-2deg);}
-.moex-pin.p8{top:74%;left:56%;transform:rotate(3deg);}
-
-@media(max-width:860px){
-  .moex-wall{height:auto;padding:24px 16px;display:flex;flex-direction:column;gap:18px;}
-  .moex-wall svg.moex-strings{display:none;}
-  .moex-pin{position:static;width:100%;transform:none !important;}
-}
-
-.moex-note{
-  display:none;max-width:720px;margin:26px auto 0;
-  border:1px solid var(--moex-brass);background:var(--moex-paper);
-  padding:18px 22px;font-style:italic;color:var(--moex-bone-dim);text-align:center;
-}
-.moex-note.moex-active{display:block;animation:moexFadeTab .4s ease;}
-
-/* ================================================
-   GALLERY / CORKBOARD
-   ================================================ */
-.moex-corkboard{
-  position:relative;background:
-    linear-gradient(rgba(10,8,6,.55), rgba(10,8,6,.75)),
-    repeating-linear-gradient(45deg, #221a10 0, #221a10 2px, #1a140c 2px, #1a140c 4px);
-  border:1px solid var(--moex-ash);
-  padding:60px 30px;min-height:640px;
-}
-.moex-string-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
-.moex-string-svg line{stroke:var(--moex-blood-bright);stroke-width:1.4;opacity:.55;}
-.moex-photo-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:34px;position:relative;z-index:2;
-}
-.moex-photo{
-  background:var(--moex-bone);padding:10px 10px 34px;
-  box-shadow:0 12px 24px rgba(0,0,0,.6);
-  transition:transform .3s, box-shadow .3s;
-  cursor:pointer;position:relative;
-}
-.moex-photo:nth-child(odd){transform:rotate(-4deg);}
-.moex-photo:nth-child(even){transform:rotate(3deg);}
-.moex-photo:hover{transform:scale(1.06) rotate(0deg);box-shadow:0 18px 40px rgba(196,24,24,.35);z-index:5;}
-.moex-photo::before{
-  content:"";position:absolute;top:-10px;left:50%;transform:translateX(-50%);
-  width:14px;height:14px;border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, #e66, var(--moex-blood));
-  box-shadow:0 3px 4px rgba(0,0,0,.5);
-}
-.moex-photo-frame{
-  aspect-ratio:4/5;background:
-    radial-gradient(circle at 30% 20%, rgba(171,138,82,.25), transparent 60%),
-    linear-gradient(160deg,#2a2018,#0d0a07 70%);
-  display:flex;align-items:center;justify-content:center;
-  filter:grayscale(.4) contrast(1.1);
-}
-.moex-photo-frame svg{width:46%;opacity:.85;}
-.moex-photo-frame img{width:100%;height:100%;object-fit:cover;display:block;}
-.moex-photo-caption{
-  font-family:var(--moex-font-mono);font-size:.68rem;color:#1a1510;
-  text-align:center;margin-top:10px;letter-spacing:.03em;
-}
-
-/* ================================================
-   MEDIA SLIDER (sits under the corkboard)
-   ================================================ */
-.moex-slider-wrap{margin-top:50px;}
-.moex-slider-label{
-  font-family:var(--moex-font-mono);font-size:.7rem;letter-spacing:.2em;
-  color:var(--moex-brass);text-transform:uppercase;margin-bottom:14px;
-  display:flex;align-items:center;gap:10px;
-}
-.moex-slider-label::before{content:"";width:20px;height:1px;background:var(--moex-brass);}
-.moex-slider{
-  position:relative;background:var(--moex-paper);border:1px solid var(--moex-ash);
+  z-index:50;
   overflow:hidden;
 }
-.moex-slider-track{
-  display:flex;transition:transform .5s cubic-bezier(.2,.7,.2,1);
-}
-.moex-slide{
-  flex:0 0 100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:420px;padding:20px;
-}
-.moex-slide img{
-  max-width:100%;max-height:420px;object-fit:contain;
-  filter:grayscale(.25) contrast(1.05);
-  box-shadow:0 14px 34px rgba(0,0,0,.6);
-}
-.moex-slide-caption{
-  margin-top:16px;font-family:var(--moex-font-mono);font-size:.72rem;
-  letter-spacing:.06em;color:var(--moex-bone-dim);text-align:center;
-}
-.moex-slider-arrow{
-  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
-  width:44px;height:44px;border-radius:50%;
-  background:rgba(10,8,6,.6);border:1px solid var(--moex-ash);color:var(--moex-bone);
-  font-size:1.1rem;cursor:pointer;transition:background .2s,border-color .2s;
-  display:flex;align-items:center;justify-content:center;
-}
-.moex-slider-arrow:hover{background:rgba(122,14,14,.4);border-color:var(--moex-blood-bright);}
-.moex-slider-prev{left:16px;}
-.moex-slider-next{right:16px;}
-.moex-slider-dots{
-  display:flex;justify-content:center;gap:10px;padding:16px 0 20px;
-  background:var(--moex-paper);border-top:1px solid var(--moex-ash);
-}
-.moex-slider-dot{
-  width:9px;height:9px;border-radius:50%;background:var(--moex-ash);
-  border:1px solid var(--moex-brass-dim);cursor:pointer;padding:0;transition:background .2s;
-}
-.moex-slider-dot.moex-active{background:var(--moex-blood-bright);border-color:var(--moex-blood-bright);}
 
-/* ================================================
-   PLAYLIST / FAKE SPOTIFY
-   ================================================ */
-.moex-player{
-  background:linear-gradient(160deg,#140d0d,#0a0707);
-  border:1px solid var(--moex-ash);
-  display:grid;grid-template-columns:280px 1fr;
-}
-@media(max-width:720px){.moex-player{grid-template-columns:1fr;}}
-.moex-player-art{
-  padding:30px;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(circle at 50% 30%, rgba(122,14,14,.3), transparent 70%);
-  border-right:1px solid var(--moex-ash);
-}
-.moex-vinyl{
-  width:170px;height:170px;border-radius:50%;
-  background:
-    repeating-radial-gradient(circle, #0c0908 0 2px, #171110 2px 4px);
-  border:6px solid #0a0706;position:relative;
-  box-shadow:0 10px 30px rgba(0,0,0,.7);
-  animation:moex-vinyl-spin 6s linear infinite;
-  animation-play-state:paused;
-}
-.moex-vinyl.moex-spinning{animation-play-state:running;}
-@keyframes moex-vinyl-spin{to{transform:rotate(360deg);}}
-.moex-vinyl::after{
-  content:"♱";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  color:var(--moex-blood-bright);font-size:1.6rem;background:var(--moex-paper);
-  width:54px;height:54px;border-radius:50%;margin:auto;
-}
-.moex-player-now{margin-top:22px;text-align:center;}
-.moex-player-now .moex-track-title{font-family:var(--moex-font-display);font-size:1.2rem;color:var(--moex-bone);}
-.moex-player-now .moex-track-sub{font-family:var(--moex-font-mono);font-size:.7rem;color:var(--moex-brass);letter-spacing:.1em;margin-top:4px;}
-
-.moex-player-main{padding:26px 30px;}
-.moex-progress-row{display:flex;align-items:center;gap:12px;margin:18px 0 8px;}
-.moex-progress-time{font-family:var(--moex-font-mono);font-size:.68rem;color:var(--moex-bone-dim);width:38px;}
-.moex-progress-track{
-  flex:1;height:4px;background:var(--moex-void);position:relative;cursor:pointer;border:1px solid var(--moex-ash);
-}
-.moex-progress-fill{position:absolute;left:0;top:0;bottom:0;width:0%;background:var(--moex-blood-bright);}
-.moex-progress-fill::after{
-  content:"";position:absolute;right:-4px;top:50%;transform:translateY(-50%);
-  width:9px;height:9px;border-radius:50%;background:var(--moex-bone);
+.moex-fall-bit{
+  position:absolute;
+  top:-8%;
+  color: var(--moex-pink);
+  opacity:0.55;
+  will-change: transform, opacity;
+  animation: moexFall linear infinite;
+  filter: drop-shadow(0 0 6px var(--moex-glow));
 }
 
-.moex-controls{display:flex;align-items:center;justify-content:center;gap:22px;margin:20px 0;}
-.moex-controls button{
-  background:none;border:none;color:var(--moex-bone-dim);cursor:pointer;
-  transition:color .2s, transform .2s;
-}
-.moex-controls button:hover{color:var(--moex-bone-dim);}
-.moex-btn-play{
-  width:52px;height:52px;border-radius:50%;background:var(--moex-blood-bright)!important;
-  display:flex;align-items:center;justify-content:center;color:var(--moex-void)!important;
-  box-shadow:0 0 24px rgba(196,24,24,.5);
-}
-.moex-btn-play:hover{transform:scale(1.08);}
-.moex-toggle-active{color:var(--moex-blood-bright)!important;}
-
-.moex-volume-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:14px;}
-.moex-volume-row input[type=range]{width:100px;}
-input[type=range]{
-  -webkit-appearance:none;appearance:none;height:3px;background:var(--moex-ash);outline:none;cursor:pointer;
-}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--moex-blood-bright);
-  box-shadow:0 0 8px rgba(196,24,24,.7);
-}
-input[type=range]::-moz-range-thumb{
-  width:12px;height:12px;border-radius:50%;background:var(--moex-blood-bright);border:none;
-}
-
-.moex-tracklist{margin-top:10px;border-top:1px solid var(--moex-ash);}
-.moex-track{
-  display:grid;grid-template-columns:26px 1fr auto;gap:12px;align-items:center;
-  padding:12px 8px;border-bottom:1px solid rgba(77,70,60,.4);cursor:pointer;
-  transition:background .2s;
-}
-.moex-track:hover{background:rgba(122,14,14,.12);}
-.moex-track.moex-track-active{background:rgba(122,14,14,.22);}
-.moex-track.moex-track-active .moex-track-name{color:var(--moex-blood-bright);}
-.moex-track-idx{font-family:var(--moex-font-mono);font-size:.72rem;color:var(--moex-ash);}
-.moex-track-name{font-family:var(--moex-font-display);font-size:1.02rem;color:var(--moex-bone);}
-.moex-track-tag{font-family:var(--moex-font-mono);font-size:.65rem;color:var(--moex-bone-dim);display:block;margin-top:2px;}
-.moex-track-len{font-family:var(--moex-font-mono);font-size:.7rem;color:var(--moex-bone-dim);}
-
-/* ================================================
-   LETTERS
-   ================================================ */
-.moex-letters-wrap{display:flex;gap:30px;flex-wrap:wrap;justify-content:center;}
-.moex-envelope{
-  width:230px;height:160px;position:relative;cursor:pointer;
-  background:linear-gradient(160deg,#e9dfcd,#d8caa9);
-  box-shadow:0 14px 30px rgba(0,0,0,.55);
-  display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;
-  transition:transform .3s;
-}
-.moex-envelope:hover{transform:translateY(-6px);}
-.moex-envelope::before{
-  content:"";position:absolute;top:0;left:0;width:0;height:0;
-  border-left:115px solid transparent;border-right:115px solid transparent;border-top:80px solid #cabb96;
-}
-.moex-seal{
-  position:relative;z-index:2;width:44px;height:44px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, #c41818, #5c0808);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--moex-font-stencil);font-size:.85rem;color:#2a0505;
-  box-shadow:0 4px 8px rgba(0,0,0,.5);
-}
-.moex-envelope-label{
-  position:absolute;bottom:-26px;left:0;right:0;text-align:center;
-  font-family:var(--moex-font-mono);font-size:.68rem;color:var(--moex-bone-dim);letter-spacing:.08em;
-}
-
-.moex-modal-overlay{
-  position:fixed;inset:0;background:rgba(5,3,2,.88);z-index:2000;
-  display:none;align-items:center;justify-content:center;padding:20px;
-  backdrop-filter:blur(3px);
-}
-.moex-modal-overlay.moex-open{display:flex;}
-.moex-modal{
-  background:linear-gradient(170deg,#efe6d3,#ddceac);color:#241a10;
-  max-width:520px;width:100%;padding:44px 40px;position:relative;
-  box-shadow:0 30px 80px rgba(0,0,0,.7);
-  max-height:82vh;overflow-y:auto;
-}
-.moex-modal h3{font-family:var(--moex-font-display);margin-top:0;color:var(--moex-blood);}
-.moex-modal p{font-family:var(--moex-font-body);font-size:1.15rem;line-height:1.7;font-style:italic;}
-.moex-modal-sign{text-align:right;font-family:var(--moex-font-display);font-size:1.3rem;margin-top:20px;color:var(--moex-blood);}
-.moex-modal-close{
-  position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#5c4b32;
-}
-.moex-modal-nav{display:flex;justify-content:space-between;margin-top:26px;}
-.moex-modal-nav button{
-  background:none;border:1px solid #5c4b32;color:#5c4b32;padding:8px 14px;cursor:pointer;
-  font-family:var(--moex-font-mono);font-size:.7rem;letter-spacing:.1em;
-}
-.moex-modal-nav button:hover{background:#5c4b32;color:#efe6d3;}
-
-/* ================================================
-   COMPATIBILITY / WOLF x BUNNY
-   ================================================ */
-.moex-compat{
-  position:relative;border:1px solid var(--moex-ash);overflow:hidden;
-}
-.moex-compat-panels{display:grid;grid-template-columns:1fr 1fr;min-height:340px;}
-.moex-compat-wolf,.moex-compat-bunny{padding:40px 34px;position:relative;}
-.moex-compat-wolf{background:linear-gradient(135deg,#2a0808,#0a0605);}
-.moex-compat-bunny{background:linear-gradient(135deg,#241d18,#0e0b09);}
-.moex-compat h4{font-family:var(--moex-font-stencil);font-size:1.1rem;letter-spacing:.05em;margin-bottom:16px;}
-.moex-compat-wolf h4{color:var(--moex-blood-bright);}
-.moex-compat-bunny h4{color:var(--moex-rose);}
-.moex-compat ul{list-style:none;padding:0;margin:0;font-family:var(--moex-font-body);font-size:1.1rem;color:var(--moex-bone-dim);}
-.moex-compat li{padding:6px 0;border-bottom:1px dotted var(--moex-ash);}
-.moex-compat-slider-row{padding:20px 34px 30px;border-top:1px solid var(--moex-ash);background:var(--moex-paper);}
-.moex-compat-slider-row input[type=range]{width:100%;}
-.moex-compat-readout{
-  text-align:center;font-family:var(--moex-font-mono);font-size:.75rem;letter-spacing:.1em;
-  color:var(--moex-brass);margin-top:12px;min-height:1.3em;
-}
-.moex-compat-center{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;
-  font-size:1.6rem;pointer-events:none;filter:drop-shadow(0 0 12px rgba(196,24,24,.6));
-}
-
-/* ================================================
-   FOOTER
-   ================================================ */
-.moex-footer{
-  text-align:center;padding:70px 20px 90px;border-top:1px solid var(--moex-ash);
-}
-.moex-footer-stamp{
-  font-family:var(--moex-font-stencil);color:var(--moex-blood-bright);font-size:1rem;
-  border:2px solid var(--moex-blood-bright);display:inline-block;padding:10px 22px;
-  transform:rotate(-3deg);margin-bottom:20px;opacity:.8;
-}
-.moex-footer p{font-family:var(--moex-font-body);font-style:italic;color:var(--moex-bone-dim);font-size:1.15rem;max-width:480px;margin:10px auto;}
-.moex-footer-mono{font-family:var(--moex-font-mono);font-size:.68rem;color:var(--moex-ash);letter-spacing:.15em;margin-top:26px;}
-
-/* ================================================
-   EASTER EGG OVERLAY
-   ================================================ */
-.moex-egg-overlay{
-  position:fixed;inset:0;z-index:5000;background:rgba(5,2,2,.95);
-  display:none;align-items:center;justify-content:center;text-align:center;flex-direction:column;
-  padding:30px;
-}
-.moex-egg-overlay.moex-open{display:flex;}
-.moex-egg-overlay h2{font-family:var(--moex-font-stencil);color:var(--moex-blood-bright);font-size:clamp(1.6rem,5vw,3rem);
-  text-shadow:0 0 30px rgba(196,24,24,.7);}
-.moex-egg-overlay p{font-family:var(--moex-font-body);font-style:italic;font-size:1.3rem;color:var(--moex-bone);max-width:500px;}
-.moex-egg-overlay button{
-  margin-top:26px;background:none;border:1px solid var(--moex-brass);color:var(--moex-brass);
-  padding:10px 24px;font-family:var(--moex-font-mono);font-size:.72rem;letter-spacing:.15em;cursor:pointer;
-}
-.moex-heart-particle{position:fixed;z-index:5001;pointer-events:none;color:var(--moex-blood-bright);font-size:1.2rem;}
-
-/* utility */
-.moex-hidden{display:none!important;}
-.moex-mute-btn{
-  position:fixed;bottom:20px;right:20px;z-index:400;
-  background:var(--moex-paper);border:1px solid var(--moex-ash);color:var(--moex-bone-dim);
-  width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1rem;
+@keyframes moexFall{
+  0%{   transform: translate(0,0) rotate(0deg);   opacity:0; }
+  8%{   opacity:0.6; }
+  50%{  transform: translate(var(--moex-sway,20px), 55vh) rotate(160deg); }
+  92%{  opacity:0.45; }
+  100%{ transform: translate(0, 112vh) rotate(320deg); opacity:0; }
 }
 
 @media (prefers-reduced-motion: reduce){
-  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
-  html{scroll-behavior:auto;}
+  .moex-fall-bit{ animation:none; display:none; }
 }
+
+/* ============================================================
+   3. SECTION TITLE (shared divider motif)
+   ============================================================ */
+
+.moex-section-title{
+  font-family:var(--moex-font-display);
+  font-style:italic;
+  font-weight:600;
+  letter-spacing:1px;
+  font-size:1.6rem;
+  color:var(--moex-ink);
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin: 60px 0 20px;
+  cursor:default;
+}
+.moex-section-title::before,
+.moex-section-title::after{
+  content:'';
+  flex:1;
+  height:1px;
+  background:linear-gradient(90deg, transparent, var(--moex-line), transparent);
+}
+.moex-section-title::before{ background:linear-gradient(90deg, transparent, var(--moex-line)); }
+.moex-section-title::after{ background:linear-gradient(90deg, var(--moex-line), transparent); }
+.moex-section-title span.moex-halo-dot{
+  width:6px; height:6px; border-radius:50%;
+  background:var(--moex-pink);
+  box-shadow:0 0 8px var(--moex-pink), 0 0 16px var(--moex-glow);
+  flex:none;
+}
+/* little "mask slipping" easter egg — hover the "Your Angel" title */
+.moex-title-swap{ position:relative; transition:0.2s ease; }
+.moex-title-swap:hover{ color:var(--moex-pink); letter-spacing:2px; }
+
+/* ============================================================
+   4. BANNER
+   EDIT ME: swap the <img src="..."> further down. Recommended
+   banner size: ~1600x400px.
+   ============================================================ */
+
+.moex-banner-wrap{ position:relative; }
+
+.moex-banner{
+  width:100%;
+  height:300px;
+  border-radius:22px;
+  overflow:hidden;
+  position:relative;
+  border:1px solid var(--moex-line);
+  box-shadow:0 20px 50px rgba(147,86,97,0.25);
+}
+
+.moex-banner img{
+  width:100%; height:100%; object-fit:cover;
+  transition: filter 0.6s ease;
+}
+body.moex-dark .moex-banner img{ filter:grayscale(0.15) saturate(1.05) contrast(1.05) brightness(0.7); }
+
+.moex-banner::after{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 45%, var(--moex-bg) 100%);
+  opacity:0.85;
+  pointer-events:none;
+}
+
+/* ============================================================
+   5. HEADER ROW — pfp + username
+   (pfp overlaps the banner's bottom-left corner on purpose)
+   ============================================================ */
+
+.moex-header-row{
+  display:flex;
+  align-items:flex-end;
+  gap:22px;
+  margin-top:-58px;
+  padding: 0 8px 6px;
+  position:relative;
+  z-index:5;
+}
+
+.moex-pfp-wrap{ position:relative; width:150px; height:150px; flex:none; }
+
+.moex-halo-ring{
+  position:absolute; inset:-16px;
+  border-radius:50%;
+  border:1.5px dashed var(--moex-pink);
+  opacity:0.7;
+  box-shadow:0 0 20px var(--moex-glow);
+  animation: moexHaloSpin 22s linear infinite;
+}
+@keyframes moexHaloSpin{ to{ transform:rotate(360deg); } }
+
+.moex-pfp{
+  width:150px; height:150px;
+  border-radius:50%;
+  overflow:hidden;
+  border:3px solid var(--moex-bg);
+  box-shadow:0 8px 22px rgba(147,86,97,0.35);
+  position:relative; z-index:2;
+  background:var(--moex-bg-alt);
+}
+.moex-pfp img{ width:100%; height:100%; object-fit:cover; }
+
+.moex-identity{ padding-bottom:8px; }
+
+.moex-username{
+  font-family:var(--moex-font-display);
+  font-size:2.1rem;
+  font-weight:700;
+  color:var(--moex-ink);
+  letter-spacing:0.5px;
+}
+
+.moex-subtitle{
+  font-family:var(--moex-font-mono);
+  font-size:0.75rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--moex-ink-soft);
+  margin-top:6px;
+}
+
+/* ============================================================
+   6. TAGS ROW (analog-horror style tag chips)
+   EDIT ME: duplicate/delete .moex-tag blocks in the HTML below.
+   ============================================================ */
+
+.moex-tags-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:26px 0 0;
+  padding:0 8px;
+}
+
+.moex-tag{
+  font-family:var(--moex-font-mono);
+  font-size:0.72rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--moex-ink);
+  background:var(--moex-panel-a);
+  border:1px solid var(--moex-line);
+  padding:7px 14px;
+  border-radius:999px;
+  transition:0.25s ease;
+}
+.moex-tag span{ color:var(--moex-pink); margin-right:6px; font-weight:700; }
+.moex-tag:hover{
+  border-color:var(--moex-pink);
+  box-shadow:0 0 14px var(--moex-glow);
+  transform:translateY(-1px);
+}
+
+/* ============================================================
+   7. PANELS (shared base)
+   ============================================================ */
+
+.moex-panel{
+  background:linear-gradient(160deg, var(--moex-panel-b), var(--moex-panel-a));
+  border:1px solid var(--moex-line);
+  border-radius:24px;
+  padding:26px 28px;
+  margin-top:22px;
+  position:relative;
+  backdrop-filter:blur(6px);
+}
+
+.moex-panel-label{
+  font-family:var(--moex-font-mono);
+  font-size:0.66rem;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--moex-pink);
+  position:absolute;
+  top:-11px; left:22px;
+  background:var(--moex-bg);
+  padding:0 10px;
+  border:1px solid var(--moex-line);
+  border-radius:999px;
+}
+
+/* ============================================================
+   8. FAKE "NOW PLAYING" PLAYER — smaller, decorative only
+   EDIT ME: change track/artist text + progress + image below.
+   ============================================================ */
+
+.moex-player{
+  display:grid;
+  grid-template-columns: 96px 1fr;
+  gap:16px;
+  align-items:center;
+  background:linear-gradient(160deg, var(--moex-panel-b), var(--moex-panel-a));
+  border:1px solid var(--moex-line);
+  border-radius:20px;
+  padding:14px 18px;
+  margin-top:22px;
+  text-decoration:none;
+  color:var(--moex-ink);
+  max-width:420px;
+  transition:0.25s ease;
+}
+.moex-player:hover{ box-shadow:0 12px 30px var(--moex-glow); transform:translateY(-2px); }
+
+.moex-player-art{
+  width:96px; height:96px;
+  border-radius:14px;
+  overflow:hidden;
+  flex:none;
+  box-shadow:0 6px 16px rgba(147,86,97,0.3);
+}
+.moex-player-art img{ width:100%; height:100%; object-fit:cover; }
+
+.moex-player-eyebrow{
+  display:flex; align-items:center; gap:7px;
+  font-family:var(--moex-font-mono);
+  font-size:0.62rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--moex-ink-soft);
+  margin-bottom:6px;
+}
+.moex-player-eyebrow .moex-pulse{
+  width:7px; height:7px; border-radius:50%;
+  background:var(--moex-pink);
+  box-shadow:0 0 8px var(--moex-pink);
+  animation:moexBlink 1.6s ease-in-out infinite;
+}
+@keyframes moexBlink{ 0%,100%{opacity:1;} 50%{opacity:0.25;} }
+
+.moex-player-track{ font-family:var(--moex-font-display); font-weight:700; font-size:1.05rem; line-height:1.2; }
+.moex-player-artist{ font-size:0.8rem; color:var(--moex-ink-soft); font-style:italic; margin-bottom:10px; }
+
+.moex-player-bar{ height:4px; border-radius:2px; background:var(--moex-line); position:relative; margin-bottom:6px; }
+.moex-player-bar span{ position:absolute; left:0; top:0; bottom:0; width:38%; background:var(--moex-pink); border-radius:2px; }
+.moex-player-times{ display:flex; justify-content:space-between; font-family:var(--moex-font-mono); font-size:0.62rem; color:var(--moex-ink-soft); }
+
+/* ============================================================
+   9. ABOUT ME + LINK BUTTONS
+   EDIT ME: your bio text + your links/labels in the HTML below.
+   ============================================================ */
+
+.moex-about-text{ font-size:1rem; line-height:1.7; color:var(--moex-ink); }
+.moex-about-text strong{ color:var(--moex-pink); }
+
+.moex-links-row{ display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
+
+.moex-btn{
+  font-family:var(--moex-font-mono);
+  font-size:0.75rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  text-decoration:none;
+  color:var(--moex-ink);
+  background:var(--moex-panel-a);
+  border:1px solid var(--moex-line);
+  padding:10px 18px;
+  border-radius:999px;
+  transition:0.25s ease;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.moex-btn:hover{
+  background:var(--moex-pink);
+  color:var(--moex-bg);
+  border-color:var(--moex-pink);
+  box-shadow:0 0 20px var(--moex-glow);
+  transform:translateY(-2px);
+}
+
+/* ============================================================
+   10. MEDIA SLIDER — manual, square photos
+   EDIT ME: swap image src links. Add/remove .moex-gallery-sq
+   blocks freely, this one scrolls manually (drag/scroll).
+   ============================================================ */
+
+.moex-gallery{
+  display:flex; gap:16px;
+  padding:6px 4px 16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+}
+.moex-gallery-sq{
+  flex:0 0 190px;
+  aspect-ratio:1/1;
+  border-radius:18px;
+  overflow:hidden;
+  scroll-snap-align:start;
+  border:1px solid var(--moex-line);
+  box-shadow:0 8px 22px rgba(147,86,97,0.15);
+  transition:0.3s ease;
+}
+.moex-gallery-sq img{ width:100%; height:100%; object-fit:cover; transition:0.4s ease; }
+.moex-gallery-sq:hover{ transform:translateY(-5px); border-color:var(--moex-pink); }
+.moex-gallery-sq:hover img{ transform:scale(1.08); }
+
+/* ============================================================
+   11. DROPDOWNS — soft edges
+   EDIT ME: duplicate/edit <details class="moex-dropdown"> blocks.
+   ============================================================ */
+
+.moex-dropdown{
+  background:var(--moex-panel-a);
+  border:1px solid var(--moex-line);
+  border-radius:20px;
+  margin-top:14px;
+  overflow:hidden;
+  transition:0.25s ease;
+}
+.moex-dropdown:first-of-type{ margin-top:20px; }
+
+.moex-dropdown summary{
+  list-style:none;
+  cursor:pointer;
+  padding:16px 20px;
+  font-family:var(--moex-font-body);
+  font-weight:600;
+  font-size:0.95rem;
+  color:var(--moex-ink);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.moex-dropdown summary::-webkit-details-marker{ display:none; }
+.moex-dropdown summary::after{
+  content:'⌄';
+  color:var(--moex-pink);
+  font-size:1.2rem;
+  transition:transform 0.25s ease;
+}
+.moex-dropdown[open] summary::after{ transform:rotate(180deg); }
+.moex-dropdown[open]{ border-color:var(--moex-pink); }
+
+.moex-dropdown-content{
+  padding:0 20px 18px;
+  font-size:0.9rem;
+  line-height:1.7;
+  color:var(--moex-ink-soft);
+}
+
+/* ============================================================
+   12. SCROLLING TERMINAL FEED
+   EDIT ME: each line is one .moex-term-msg — copy/delete to
+   add or remove lines. Keep the [00:00] time format if you can.
+   ============================================================ */
+
+.moex-terminal{
+  background:var(--moex-bg-alt);
+  border:1px solid var(--moex-line);
+  border-radius:18px;
+  padding:20px 22px;
+  margin-top:20px;
+}
+.moex-term-head{
+  display:flex; align-items:center; justify-content:space-between;
+  font-family:var(--moex-font-mono);
+  font-size:0.72rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--moex-ink-soft);
+  padding-bottom:12px;
+  margin-bottom:12px;
+  border-bottom:1px dashed var(--moex-line);
+}
+.moex-term-live{ color:var(--moex-pink); animation:moexBlink 2s infinite; }
+
+.moex-term-window{
+  height:150px;
+  overflow:hidden;
+  position:relative;
+  -webkit-mask-image:linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
+  mask-image:linear-gradient(to bottom, transparent, black 14%, black 86%, transparent);
+}
+.moex-term-feed{
+  display:flex; flex-direction:column; gap:12px;
+  animation:moexTermScroll 26s linear infinite;
+}
+.moex-term-window:hover .moex-term-feed{ animation-play-state:paused; }
+@keyframes moexTermScroll{
+  0%{ transform:translateY(0); }
+  100%{ transform:translateY(-50%); }
+}
+.moex-term-msg{ font-family:var(--moex-font-mono); font-size:0.8rem; line-height:1.5; color:var(--moex-ink); }
+.moex-term-time{ color:var(--moex-ink-soft); margin-right:8px; }
+.moex-term-user{ color:var(--moex-pink); font-weight:700; margin-right:8px; }
+
+/* ============================================================
+   13. SERIES CARDS
+   EDIT ME: duplicate/edit .moex-series-card blocks below.
+   ============================================================ */
+
+.moex-series-scroll{
+  display:flex; gap:18px;
+  padding:6px 4px 16px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+}
+.moex-series-card{
+  flex:0 0 240px;
+  background:linear-gradient(165deg, var(--moex-panel-b), var(--moex-panel-a));
+  border:1px solid var(--moex-line);
+  border-radius:20px;
+  overflow:hidden;
+  text-decoration:none;
+  color:inherit;
+  scroll-snap-align:start;
+  transition:0.3s ease;
+  display:flex; flex-direction:column;
+}
+.moex-series-card:hover{
+  transform:translateY(-6px);
+  border-color:var(--moex-pink);
+  box-shadow:0 16px 36px var(--moex-glow);
+}
+.moex-series-banner{ height:130px; width:100%; overflow:hidden; }
+.moex-series-banner img{ width:100%; height:100%; object-fit:cover; transition:0.4s ease; }
+.moex-series-card:hover .moex-series-banner img{ transform:scale(1.06); }
+
+.moex-series-body{ padding:16px 16px 18px; }
+.moex-series-title{ font-family:var(--moex-font-display); font-weight:700; font-size:1.1rem; color:var(--moex-ink); margin-bottom:8px; }
+.moex-series-desc{
+  font-size:0.82rem; line-height:1.55; color:var(--moex-ink-soft);
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+}
+.moex-series-genres{ display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.moex-series-genre{
+  font-family:var(--moex-font-mono); font-size:0.6rem; letter-spacing:1px; text-transform:uppercase;
+  color:var(--moex-ink-soft); background:var(--moex-panel-a); border:1px solid var(--moex-line);
+  padding:4px 9px; border-radius:999px;
+}
+.moex-series-links{ display:flex; gap:8px; margin-top:14px; }
+.moex-series-btn{
+  flex:1; text-align:center; font-family:var(--moex-font-mono); font-size:0.64rem; letter-spacing:1px;
+  text-transform:uppercase; text-decoration:none; color:var(--moex-ink); background:var(--moex-panel-a);
+  border:1px solid var(--moex-line); padding:8px 8px; border-radius:999px; transition:0.25s ease;
+}
+.moex-series-btn:hover{ background:var(--moex-pink); color:var(--moex-bg); border-color:var(--moex-pink); box-shadow:0 0 14px var(--moex-glow); }
+
+/* ============================================================
+   14. AUTO-SLIDING MEDIA SLIDER — square photos, loops forever
+   EDIT ME: swap images. If you change how many photos you have,
+   duplicate the FULL set twice, same as below — that keeps the
+   auto-scroll looking seamless.
+   ============================================================ */
+
+.moex-autoslider{
+  overflow:hidden;
+  border-radius:20px;
+  border:1px solid var(--moex-line);
+  padding:20px 0;
+  background:radial-gradient(600px 200px at 50% 0%, var(--moex-panel-a), transparent);
+  -webkit-mask-image:linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image:linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+.moex-autoslider-track{
+  display:flex; gap:18px;
+  width:max-content;
+  animation:moexSlide 26s linear infinite;
+}
+.moex-autoslider:hover .moex-autoslider-track{ animation-play-state:paused; }
+@keyframes moexSlide{ 0%{ transform:translateX(0); } 100%{ transform:translateX(-50%); } }
+
+.moex-autoslide-sq{
+  flex:none; width:150px; height:150px;
+  border-radius:16px;
+  overflow:hidden;
+  border:2px solid var(--moex-line);
+  box-shadow:0 0 16px var(--moex-panel-a);
+}
+.moex-autoslide-sq img{ width:100%; height:100%; object-fit:cover; }
+
+/* ============================================================
+   15. THEME TOGGLE — floating, fixed corner
+   ============================================================ */
+
+.moex-theme-toggle{
+  position:fixed;
+  bottom:22px; right:22px;
+  z-index:300;
+  width:56px; height:56px;
+  border-radius:50%;
+  border:1px solid var(--moex-line);
+  background:linear-gradient(160deg, var(--moex-panel-b), var(--moex-pink-soft));
+  color:var(--moex-ink);
+  font-size:1.4rem;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  box-shadow:0 10px 28px rgba(147,86,97,0.35);
+  transition:0.3s ease;
+}
+.moex-theme-toggle:hover{ transform:translateY(-3px) scale(1.05); box-shadow:0 14px 32px var(--moex-glow); }
+.moex-theme-toggle:active{ transform:scale(0.94); }
+
+/* ============================================================
+   16. FOOTER
+   ============================================================ */
+
+.moex-footer{ margin-top:70px; text-align:center; padding-top:26px; border-top:1px solid var(--moex-line); }
+.moex-footer p{ font-family:var(--moex-font-mono); font-size:0.68rem; letter-spacing:2px; text-transform:uppercase; color:var(--moex-ink-soft); }
+.moex-footer .moex-halo-dot{ display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--moex-pink); box-shadow:0 0 8px var(--moex-pink); margin:0 10px; }
+
+/* ============================================================
+   17. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 640px){
+  .moex-banner{ height:180px; border-radius:16px; }
+  .moex-header-row{ flex-direction:column; align-items:flex-start; margin-top:-40px; gap:14px; }
+  .moex-pfp-wrap, .moex-pfp{ width:110px; height:110px; }
+  .moex-halo-ring{ inset:-12px; }
+  .moex-username{ font-size:1.6rem; }
+  .moex-panel{ padding:20px; }
+  .moex-player{ grid-template-columns:72px 1fr; max-width:100%; }
+  .moex-player-art{ width:72px; height:72px; }
+  .moex-series-card{ flex-basis:190px; }
+  .moex-autoslide-sq{ width:110px; height:110px; }
+  .moex-gallery-sq{ flex-basis:140px; }
+  .moex-theme-toggle{ width:48px; height:48px; bottom:16px; right:16px; font-size:1.2rem; }
+}
+
 </style>
 </head>
 
-<body>
+<body class="moex-body">
 
-<div class="moex-grain"></div>
-<div class="moex-scanlines"></div>
-<div class="moex-cursor" id="moexCursor"><div class="moex-ring"></div></div>
+<!-- DO NOT TOUCH: falling sparkles/hearts layer, populated by script at bottom -->
+<div class="moex-fall-layer" id="moexFallLayer"></div>
 
-<!-- NAV -->
-<nav class="moex-nav">
-  <div class="moex-nav-inner">
-    <a href="#moex-dossier" data-moex-tab>DOSSIER</a>
-    <a href="#moex-wall" data-moex-tab>EVIDENCE</a>
-    <a href="#moex-gallery" data-moex-tab>GALLERY</a>
-    <a href="#moex-playlist" data-moex-tab>PLAYLIST</a>
-    <a href="#moex-letters" data-moex-tab>LETTERS</a>
-    <a href="#moex-compat" data-moex-tab>US</a>
-  </div>
-</nav>
+<!-- Theme toggle — floating, fixed bottom-right -->
+<button class="moex-theme-toggle" id="moexThemeToggle" title="switch vibes" aria-label="Toggle soft/unhinged mode">🩷</button>
 
-<!-- HERO -->
-<header class="moex-hero" id="moex-hero">
-  <div class="moex-radar"><div class="moex-radar-sweep"></div></div>
-  <div class="moex-eyebrow">Личное дело · Personal File · Restricted Access</div>
-  <h1>МАКАРО<span>В</span></h1>
-  <p class="moex-hero-sub">Ghost of the Konni. Architect of a war no one else could see coming. Mine, before he was ever theirs to fear.</p>
-  <div class="moex-hero-file" id="moexTypewriter"></div>
-  <div class="moex-scrolldown"><span></span>SCROLL</div>
-</header>
+<div class="moex-page">
 
-<div class="moex-ticker">
-  <div class="moex-ticker-track">
-    <span>FILE STATUS: OPEN — INDEFINITELY</span>
-    <span>LAST SEEN: EVERYWHERE AND NOWHERE</span>
-    <span>THREAT ASSESSMENT: TO EVERYONE BUT ME</span>
-    <span>CLEARANCE: A. ONLY</span>
-    <span>DO NOT CLOSE THIS FILE</span>
-    <span>FILE STATUS: OPEN — INDEFINITELY</span>
-    <span>LAST SEEN: EVERYWHERE AND NOWHERE</span>
-    <span>THREAT ASSESSMENT: TO EVERYONE BUT ME</span>
-    <span>CLEARANCE: A. ONLY</span>
-    <span>DO NOT CLOSE THIS FILE</span>
-  </div>
-</div>
-
-<!-- DOSSIER -->
-<section class="moex-section" id="moex-dossier">
-  <span class="moex-stamp">СЕКРЕТНО</span>
-  <div class="moex-tag">Personnel Record</div>
-  <h2 class="moex-h2">The Dossier</h2>
-
-  <!-- stampcard, imported from the Brown template -->
-  <div class="moex-stampcard">
-    <div class="moex-stampcard-row"><span class="moex-stampcard-key">NAME</span><span>V. MAKAROV</span></div>
-    <div class="moex-stampcard-row"><span class="moex-stampcard-key">ALIAS</span><span>Kingfish · First Horseman · Prisoner 627</span></div>
-    <div class="moex-stampcard-row"><span class="moex-stampcard-key">AFFILIATION</span><span>Ultranationalist · Konni · Inner Circle</span></div>
-    <div class="moex-stampcard-row"><span class="moex-stampcard-key">REPUTATION</span><span>feared, precise, unforgiving</span></div>
-    <div class="moex-stampcard-row"><span class="moex-stampcard-key">STATUS</span><span class="moex-redact" data-value="W.I.A. · Married" tabindex="0" role="button" aria-label="Reveal redacted field">███████████████</span></div>
-    <div class="moex-stampcard-row"><span class="moex-stampcard-key">PARTNER</span><span class="moex-redact" data-value="Angelina Molkova Makarova" tabindex="0" role="button" aria-label="Reveal redacted field">████████████████████</span></div>
-  </div>
-
-  <!-- tabbed dossier, imported from the Brown template -->
-  <div class="moex-tabs" role="tablist" aria-label="Dossier sections">
-    <button class="moex-tabbtn moex-active" data-tab="t1" role="tab" aria-selected="true">The Ultranationalist</button>
-    <button class="moex-tabbtn" data-tab="t2" role="tab" aria-selected="false">The Commander</button>
-    <button class="moex-tabbtn" data-tab="t3" role="tab" aria-selected="false">The Husband</button>
-  </div>
-
-  <div class="moex-tabpanel moex-active" id="t1" role="tabpanel">
-    <div class="moex-file" data-stamp="FILE 001 / POLITICAL">
-      <p>They write his name in the same paragraphs as words like <em>threat</em> and <em>architect</em>. He inherited a cause built on old grievances and made it his own — cold, patient, allergic to sentiment in every room except this one.</p>
-      <p>The reports call him a symbol before they call him a man. I understand why. I also know it isn't the whole file.</p>
-      <p>What he believes about his country is his to carry. What he does for it is not something I write love letters about. But the man who takes his boots off at our door is not the man in these reports — or he is, and he simply decided the war stops at the threshold.</p>
+  <!-- ================= BANNER ================= -->
+  <!-- EDIT ME: change the src="..." below to your own banner image -->
+  <div class="moex-banner-wrap">
+    <div class="moex-banner">
+      <img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Lightbanner" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Lightbanner" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/darkbanner.png" alt="Banner">
     </div>
-  </div>
 
-  <div class="moex-tabpanel" id="t2" role="tabpanel">
-    <div class="moex-file" data-stamp="FILE 002 / OPERATIONAL">
-      <p>Konni-trained. Ghost-quiet. The kind of commander whose name alone ends arguments in rooms he isn't even in. People who've served under him describe him in two words, always the same two: <em>controlled</em>, and <em>terrifying</em>.</p>
-      <p>He plans the way other men breathe — automatically, and three moves ahead. I've watched him rearrange an entire evening because one variable shifted, the same face he'd wear rerouting a convoy.</p>
-      <p>He does not raise his voice. He has never needed to. <span class="moex-redact" data-value="the only time I've seen him lose composure was the week I went missing for six hours because my train was delayed." tabindex="0" role="button" aria-label="Reveal redacted field">████████████████████████████████████████████</span></p>
-    </div>
-  </div>
-
-  <div class="moex-tabpanel" id="t3" role="tabpanel">
-    <div class="moex-file" data-stamp="FILE 003 / UNCLASSIFIED">
-      <p>This is the file the reports don't have. He drinks his tea too hot on purpose. He reads my letters twice — once fast, to know I'm safe, once slow, to hear my voice in it. He is, quietly and without any apparent irony, soft with me in a way that would ruin his reputation if anyone ever saw it.</p>
-      <p>People ask how a rabbit ends up married to a wolf. I never have a clever answer. Mostly I just say: he was gentle before he was anything else to me, and everyone else only ever got to meet him after.</p>
-      <p>Case status, as far as I'm concerned: <span class="moex-redact" data-value="closed. happily. permanently." tabindex="0" role="button" aria-label="Reveal redacted field">████████████████████</span></p>
-    </div>
-  </div>
-</section>
-
-<!-- EVIDENCE WALL (imported from the Brown template) -->
-<section class="moex-section" id="moex-wall">
-  <div class="moex-tag">Corkboard, Recovered From The Study</div>
-  <h2 class="moex-h2">The Evidence Wall</h2>
-  <p style="font-family:var(--moex-font-body);color:var(--moex-bone-dim);font-size:1.15rem;margin:-14px 0 34px;">Everything I've collected of him. Click a pin.</p>
-
-  <div class="moex-wall" id="moexWall">
-    <svg class="moex-strings" viewBox="0 0 100 100" preserveAspectRatio="none">
-      <path d="M 12 10 L 41 14" />
-      <path d="M 41 14 L 70 8" />
-      <path d="M 18 46 L 48 50" />
-      <path d="M 48 50 L 77 44" />
-      <path d="M 30 82 L 60 78" />
-      <path d="M 12 10 L 18 46" />
-      <path d="M 70 8 L 77 44" />
-      <path d="M 48 50 L 60 78" />
-      <path d="M 18 46 L 30 82" />
-    </svg>
-
-    <button class="moex-pin p1" data-note="A coat, left on the back of a chair for three days because he swore he'd be back before it got cold. It didn't. He wasn't. I wore it instead.">
-      <div class="moex-pin-art"><svg viewBox="0 0 64 64" fill="none" stroke="#2a221b" stroke-width="2"><path d="M22 14 L32 8 L42 14 L42 52 L22 52 Z"/><path d="M22 18 L14 26 L14 40 L22 34"/><path d="M42 18 L50 26 L50 40 L42 34"/></svg></div>
-      <div class="moex-pin-cap">THE COAT</div>
-    </button>
-
-    <button class="moex-pin p2" data-note="A hand-drawn map of Grozny, red pins marking places he never explains. I stopped asking. I started trusting the silence instead.">
-      <div class="moex-pin-art"><svg viewBox="0 0 64 64" fill="none" stroke="#2a221b" stroke-width="2"><rect x="10" y="10" width="44" height="44"/><path d="M10 24 L54 20 M10 40 L54 44 M24 10 L20 54 M40 10 L44 54"/><circle cx="30" cy="30" r="2" fill="#8a1a1a" stroke="none"/></svg></div>
-      <div class="moex-pin-cap">THE MAP</div>
-    </button>
-
-    <button class="moex-pin p3" data-note="Two rings. One steel, one gold, kept in the same small box — his idea, not mine. He said a marriage should carry both kinds of promise.">
-      <div class="moex-pin-art"><svg viewBox="0 0 64 64" fill="none" stroke="#2a221b" stroke-width="2"><circle cx="24" cy="34" r="12"/><circle cx="40" cy="34" r="12"/></svg></div>
-      <div class="moex-pin-cap">TWO RINGS</div>
-    </button>
-
-    <button class="moex-pin p4" data-note="A dog tag, warm from being kept under a shirt collar instead of around a neck. He gave it to me the week he first left for six months.">
-      <div class="moex-pin-art"><svg viewBox="0 0 64 64" fill="none" stroke="#2a221b" stroke-width="2"><rect x="18" y="16" width="28" height="36" rx="8"/><circle cx="32" cy="14" r="3"/></svg></div>
-      <div class="moex-pin-cap">THE TAG</div>
-    </button>
-
-    <button class="moex-pin p5" data-note="A photograph, the only one that exists of us together. He doesn't like cameras. He let this one happen anyway.">
-      <div class="moex-pin-art"><svg viewBox="0 0 64 64" fill="none" stroke="#2a221b" stroke-width="2"><rect x="8" y="12" width="48" height="38"/><circle cx="32" cy="31" r="9"/><rect x="24" y="6" width="10" height="6"/></svg></div>
-      <div class="moex-pin-cap">THE PHOTOGRAPH</div>
-    </button>
-
-    <button class="moex-pin p6" data-note="A compass that doesn't point north anymore — he broke it on purpose, he says, so it would only ever point toward home.">
-      <div class="moex-pin-art"><svg viewBox="0 0 64 64" fill="none" stroke="#2a221b" stroke-width="2"><circle cx="32" cy="32" r="20"/><path d="M32 18 L36 32 L32 46 L28 32 Z" fill="#8a1a1a" stroke="none"/></svg></div>
-      <div class="moex-pin-cap">THE COMPASS</div>
-    </button>
-
-    <button class="moex-pin p7" data-note="A single wolf-track sketch, drawn in the margin of a letter, next to a much smaller rabbit print. He never explained it. He didn't need to.">
-      <div class="moex-pin-art"><svg viewBox="0 0 64 64" fill="none" stroke="#2a221b" stroke-width="2"><ellipse cx="24" cy="40" rx="12" ry="8"/><ellipse cx="46" cy="24" rx="6" ry="4"/></svg></div>
-      <div class="moex-pin-cap">TWO SETS OF TRACKS</div>
-    </button>
-
-    <button class="moex-pin p8" data-note="A wax seal, unused, engraved with both our initials. He commissioned it the same week he proposed. Old money habits, he called it. I called it romantic.">
-      <div class="moex-pin-art"><svg viewBox="0 0 64 64" fill="none" stroke="#2a221b" stroke-width="2"><circle cx="32" cy="32" r="18"/><text x="32" y="38" font-size="16" text-anchor="middle" fill="#2a221b" stroke="none" font-family="Georgia, serif">V+A</text></svg></div>
-      <div class="moex-pin-cap">THE SEAL</div>
-    </button>
-  </div>
-
-  <div class="moex-note" id="moexNote"></div>
-</section>
-
-<!-- GALLERY -->
-<section class="moex-section" id="moex-gallery">
-  <div class="moex-tag">Surveillance Archive</div>
-  <h2 class="moex-h2">The Corkboard</h2>
-  <div class="moex-corkboard" id="moexCorkboard">
-    <svg class="moex-string-svg" id="moexStringSvg"></svg>
-    <div class="moex-photo-grid">
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/Konni_Hq.jpg" alt="REF. 01"></div>
-        <div class="moex-photo-caption">REF. 01 — Konni HQ, exact date unknown</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/Sideprofile.jpg" alt="REF. 02"></div>
-        <div class="moex-photo-caption">REF. 02 — Date night</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/maka.jpg" alt="REF. 03"></div>
-        <div class="moex-photo-caption">REF. 03 — the pin he thinks I don't notice him wearing for me</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/beach.jpg" alt="REF. 04"></div>
-        <div class="moex-photo-caption">REF. 04 — somewhere he wasn't supposed to be. with me.</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/angel.jpg" alt="REF. 05"></div>
-        <div class="moex-photo-caption">REF. 05 — the only target he's ever let get close</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/Mak_office.jpg" alt="REF. 06"></div>
-        <div class="moex-photo-caption">REF. 06 — the wolf, mid-thought, unaware he's being watched</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/angel.jpg" alt="REF. 05"></div>
-        <div class="moex-photo-caption">REF. 07 — ...</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/Mak_office.jpg" alt="REF. 06"></div>
-        <div class="moex-photo-caption">REF. 08 — ...</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/angel.jpg" alt="REF. 05"></div>
-        <div class="moex-photo-caption">REF. 09 — ...</div>
-      </div>
-      <div class="moex-photo" data-pin>
-        <div class="moex-photo-frame"><img src="https://file.garden/ad35P9foF0kAW7I8/Mak_office.jpg" alt="REF. 06"></div>
-        <div class="moex-photo-caption">REF. 10 — ...</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MEDIA SLIDER -->
-  <div class="moex-slider-wrap">
-    <div class="moex-slider-label">Additional Photos</div>
-    <div class="moex-slider" id="moexSlider">
-      <div class="moex-slider-track" id="moexSliderTrack">
-        <div class="moex-slide">
-          <img src="https://file.garden/ad35P9foF0kAW7I8/garden.jpg" alt="Photo 1">
-          <div class="moex-slide-caption">REF. 11 — caption goes here</div>
-        </div>
-        <div class="moex-slide">
-          <img src="https://file.garden/ad35P9foF0kAW7I8/bnw.jpg" alt="Photo 2">
-          <div class="moex-slide-caption">REF. 12 — caption goes here</div>
-        </div>
-        <div class="moex-slide">
-          <img src="https://file.garden/ad35P9foF0kAW7I8/gun.jpg" alt="Photo 3">
-          <div class="moex-slide-caption">REF. 13 — caption goes here</div>
+    <!-- ================= PFP + USERNAME ================= -->
+    <!-- EDIT ME: swap the pfp src, the username text, and the subtitle -->
+    <div class="moex-header-row">
+      <div class="moex-pfp-wrap">
+        <div class="moex-halo-ring"></div>
+        <div class="moex-pfp">
+          <img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Lightpfp" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Lightpfp" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/darkpfp.png" alt="Profile picture">
         </div>
       </div>
-      <button class="moex-slider-arrow moex-slider-prev" id="moexSliderPrev" aria-label="Previous photo">◄</button>
-      <button class="moex-slider-arrow moex-slider-next" id="moexSliderNext" aria-label="Next photo">►</button>
+      <div class="moex-identity">
+        <h1 class="moex-username">@MOEXRAN</h1>
+        <p class="moex-subtitle" id="moexSubtitle">your angel // soft on the surface</p>
+      </div>
     </div>
-    <div class="moex-slider-dots" id="moexSliderDots"></div>
   </div>
-</section>
-<section class="moex-section" id="moex-playlist">
-  <div class="moex-tag">Frequency: Private</div>
-  <h2 class="moex-h2">What I Play When He's Late</h2>
-  <div class="moex-player">
+
+  <!-- ================= TAGS ================= -->
+  <!-- EDIT ME: copy/delete .moex-tag blocks to change your tags -->
+  <div class="moex-tags-row">
+    <div class="moex-tag"><span>#</span>angelcore</div>
+    <div class="moex-tag"><span>#</span>hyperfem</div>
+    <div class="moex-tag"><span>#</span>DDLG</div>
+    <div class="moex-tag"><span>!</span>writer</div>
+    <div class="moex-tag"><span>!</span>hopelessromantic</div>
+    <div class="moex-tag"><span>#</span>lovergirl</div>
+  </div>
+
+  <!-- =============== NOW PLAYING (fake spotify, smaller) =============== -->
+  <!-- EDIT ME: change track/artist/times, and the art image -->
+  <a class="moex-player" href="https://open.spotify.com/track/7uv632EkfwYhXoqf8rhYrg?si=0df318151b60438d" target="_blank" rel="noopener">
     <div class="moex-player-art">
-      <div class="moex-vinyl" id="moexVinyl"></div>
-      <div class="moex-player-now">
-        <div class="moex-track-title" id="moexNowTitle">Wolf in Konni Green</div>
-        <div class="moex-track-sub" id="moexNowTag">for the nights the radio stays on</div>
-      </div>
+      <img src="https://file.garden/ad35P9foF0kAW7I8/angelma.jpg" alt="Now playing art">
     </div>
-    <div class="moex-player-main">
-      <div class="moex-progress-row">
-        <span class="moex-progress-time" id="moexTimeCur">0:00</span>
-        <div class="moex-progress-track" id="moexProgressTrack"><div class="moex-progress-fill" id="moexProgressFill"></div></div>
-        <span class="moex-progress-time" id="moexTimeTotal">3:47</span>
-      </div>
-      <div class="moex-controls">
-        <button id="moexShuffle" title="shuffle">⇄</button>
-        <button id="moexPrev" title="previous">⏮</button>
-        <button class="moex-btn-play" id="moexPlayBtn" title="play/pause">▶</button>
-        <button id="moexNext" title="next">⏭</button>
-        <button id="moexRepeat" title="repeat">↻</button>
-      </div>
-      <div class="moex-volume-row">
-        <span style="font-family:var(--moex-font-mono);font-size:.65rem;color:var(--moex-bone-dim);">VOL</span>
-        <input type="range" id="moexVolume" min="0" max="100" value="45">
-      </div>
-      <div class="moex-tracklist" id="moexTracklist"></div>
+    <div>
+      <div class="moex-player-eyebrow"><span class="moex-pulse"></span>now playing</div>
+      <div class="moex-player-track">Angel</div>
+      <div class="moex-player-artist">Massive Attack</div>
+      <div class="moex-player-bar"><span></span></div>
+      <div class="moex-player-times"><span>1:17</span><span>6.19</span></div>
     </div>
-  </div>
-</section>
+  </a>
 
-<!-- LETTERS -->
-<section class="moex-section" id="moex-letters">
-  <div class="moex-tag">Correspondence, Unsent</div>
-  <h2 class="moex-h2">Letters He'll Never Find</h2>
-  <div class="moex-letters-wrap">
-    <div class="moex-envelope" data-letter="0"><div class="moex-seal">M</div><div class="moex-envelope-label">01 — for the day he doesn't come home on time</div></div>
-    <div class="moex-envelope" data-letter="1"><div class="moex-seal">M</div><div class="moex-envelope-label">02 — for the version of him no one else believes exists</div></div>
-    <div class="moex-envelope" data-letter="2"><div class="moex-seal">M</div><div class="moex-envelope-label">03 — for whoever finds this file after us</div></div>
-  </div>
-</section>
-
-<!-- COMPATIBILITY -->
-<section class="moex-section" id="moex-compat">
-  <div class="moex-tag">Cross-Reference</div>
-  <h2 class="moex-h2">Wolf &amp; Bunny, By the Numbers</h2>
-  <div class="moex-compat">
-    <div class="moex-compat-panels">
-      <div class="moex-compat-wolf">
-        <h4>HIM</h4>
-        <ul><li>Control</li><li>Iron discipline</li><li>Silence as a weapon</li><li>Trusts almost no one</li><li>Storms, quiet ones</li></ul>
-      </div>
-      <div class="moex-compat-bunny">
-        <h4>ME</h4>
-        <ul><li>Trust, given too easily</li><li>Soft chaos</li><li>Talks enough for two</li><li>Believes almost everyone</li><li>Sunlight, stubborn</li></ul>
-      </div>
-      <div class="moex-compat-center">🐺✦🐇</div>
-    </div>
-    <div class="moex-compat-slider-row">
-      <input type="range" id="moexCompatSlider" min="0" max="100" value="50">
-      <div class="moex-compat-readout" id="moexCompatReadout">perfectly, dangerously balanced</div>
+  <!-- ================= ABOUT ME + LINKS ================= -->
+  <!-- EDIT ME: rewrite the bio text and the link buttons below -->
+  <div class="moex-panel">
+    <div class="moex-panel-label">about.txt</div>
+    <p class="moex-about-text">
+      hi, i'm <strong>moexran</strong> — your angel, your daydream, and the last thought you have before falling asleep.
+      i write soft things that turn feral halfway through. i promise i'm sweet. i just don't share well.
+    </p>
+    <div class="moex-links-row">
+      <a href="https://www.wattpad.com/user/Moexran" class="moex-btn">Wattpad</a>
+      <a href="https://archiveofourown.org/users/MoexRan" class="moex-btn">AO3</a>
+      <a href="https://pin.it/3bunwdMHu" class="moex-btn">Pinterest</a>
+      <a href="https://moexran.carrd.co/" class="moex-btn">Carrd</a>
+      <a href="https://open.spotify.com/user/31iy47rh5ycyvr455xhrfuliqicm?si=21a1bce6907f47ba" class="moex-btn">Spotify</a>
     </div>
   </div>
-</section>
 
-<!-- FOOTER -->
-<footer class="moex-footer">
-  <div class="moex-footer-stamp">FILE NEVER CLOSED</div>
-  <p>Some dossiers get archived. Ours doesn't. He is the one thing about this world I refuse to be objective about.</p>
-  <p style="font-family:var(--moex-font-display);font-style:normal;color:var(--moex-bone);">— Angel, keeper of this file</p>
-  <div class="moex-footer-mono" id="moexAnniversary">DAYS ON FILE TOGETHER: —</div>
-</footer>
-
-<button class="moex-mute-btn" id="moexMuteBtn" title="toggle ambient sound">🔈</button>
-
-<!-- LETTER MODAL -->
-<div class="moex-modal-overlay" id="moexModalOverlay">
-  <div class="moex-modal">
-    <button class="moex-modal-close" id="moexModalClose">✕</button>
-    <h3 id="moexModalTitle">Letter</h3>
-    <p id="moexModalBody">...</p>
-    <div class="moex-modal-sign">— A.</div>
-    <div class="moex-modal-nav">
-      <button id="moexModalPrev">◄ previous</button>
-      <button id="moexModalNext">next ►</button>
+  <!-- ================= MORE LINKS ================= -->
+  <div class="moex-panel">
+    <div class="moex-panel-label">bots.txt</div>
+    <p class="moex-about-text">find my AI bots here too.</p>
+    <div class="moex-links-row">
+      <a href="LINK_HERE" class="moex-btn">Janitor.AI</a>
+      <a href="LINK_HERE" class="moex-btn">Saucepan</a>
+      <a href="LINK_HERE" class="moex-btn">Wyvern</a>
+      <a href="LINK_HERE" class="moex-btn">Charsnap</a>
     </div>
   </div>
+
+  <!-- ================= MEDIA SLIDER (manual, squares) ================= -->
+  <h2 class="moex-section-title"><span class="moex-halo-dot"></span>Gallery</h2>
+  <div class="moex-gallery moex-hscroll">
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light1.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light1.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/Dark1.png" alt="Gallery photo 1"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light2.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light2.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark2.jpg" alt="Gallery photo 2"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light3.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light3.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark3.jpg" alt="Gallery photo 3"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light4.jpg" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light4.jpg" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark4.jpg" alt="Gallery photo 4"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light5.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light5.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark5.jpg" alt="Gallery photo 5"></div>
+    <div class="moex-gallery-sq"><img class="moex-theme-img" src="https://file.garden/ad35P9foF0kAW7I8/Light6.png" data-light-src="https://file.garden/ad35P9foF0kAW7I8/Light6.png" data-dark-src="https://file.garden/ad35P9foF0kAW7I8/dark6.jpg" alt="Gallery photo 6"></div>
+  </div>
+
+  <!-- ================= DROPDOWNS ================= -->
+  <!-- EDIT ME: duplicate/edit the <details> blocks to add more dropdowns -->
+  <h2 class="moex-section-title moex-title-swap" id="moexAngelTitle" data-alt="Your Obsession"><span class="moex-halo-dot"></span>Your Angel</h2>
+  <div class="moex-panel">
+    <details class="moex-dropdown">
+      <summary>Rules / Etiquette</summary>
+      <div class="moex-dropdown-content">
+        Be sweet to me and I'll be sweet back. MDNI. Lorem ipsum dolor sit amet, edit this text with your real rules.
+      </div>
+    </details>
+    <details class="moex-dropdown">
+      <summary>FAQ</summary>
+      <div class="moex-dropdown-content">
+        AFAB. SEA. 23yo. Happily in love w my boyfie.
+      </div>
+    </details>
+    <details class="moex-dropdown">
+      <summary>Resources</summary>
+      <div class="moex-dropdown-content">
+        Template hand-coded with love (and a little bit of unhinged). Fonts via Google Fonts, images via placehold.co.
+      </div>
+    </details>
+  </div>
+
+  <!-- ================= SCROLLING TERMINAL FEED ================= -->
+  <!-- EDIT ME: copy/delete .moex-term-msg lines to change the feed -->
+  <div class="moex-terminal">
+    <div class="moex-term-head">
+      <span>&gt; terminal_feed.exe</span>
+      <span class="moex-term-live">● live</span>
+    </div>
+    <div class="moex-term-window">
+      <div class="moex-term-feed">
+        <div class="moex-term-msg"><span class="moex-term-time">[00:01]</span><span class="moex-term-user">MOE:</span>fall for me... or fall with me.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:02]</span><span class="moex-term-user">MOE:</span>love me love me love me love me love me. I'll do anything.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:03]</span><span class="moex-term-user">MOE:</span>I promise I'm normal about you. mostly.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:04]</span><span class="moex-term-user">MOE:</span>be careful with my heart, I've already fallen from heaven for you.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:05]</span><span class="moex-term-user">MOE:</span>I'm not obsessed, I'm just... very, very interested.</div>
+        <!-- DO NOT TOUCH: this second copy of the messages is what makes the
+             scroll loop seamless. If you add/remove lines above, copy the
+             exact same change down here too. -->
+        <div class="moex-term-msg"><span class="moex-term-time">[00:01]</span><span class="moex-term-user">MOE:</span>fall for me... or fall with me.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:02]</span><span class="moex-term-user">MOE:</span>love me love me love me love me love me. I'll do anything.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:03]</span><span class="moex-term-user">MOE:</span>I promise I'm normal about you. mostly.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:04]</span><span class="moex-term-user">MOE:</span>be careful with my heart, I've already fallen from heaven for you.</div>
+        <div class="moex-term-msg"><span class="moex-term-time">[00:05]</span><span class="moex-term-user">MOE:</span>I'm not obsessed, I'm just... very, very interested.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SERIES ================= -->
+  <!-- EDIT ME: duplicate/edit .moex-series-card blocks to add your series -->
+  <h2 class="moex-section-title"><span class="moex-halo-dot"></span>Series</h2>
+  <div class="moex-series-scroll moex-hscroll">
+
+    <div class="moex-series-card">
+      <div class="moex-series-banner"><img src="https://placehold.co/400x200/FAE9D7/935661?text=Summerset" alt="Series banner"></div>
+      <div class="moex-series-body">
+        <h3 class="moex-series-title">Summerset University</h3>
+        <p class="moex-series-desc">Summerset is both a dream and a battlefield. You don't just get in... you survive.</p>
+        <div class="moex-series-genres">
+          <span class="moex-series-genre">Slice of Life</span>
+          <span class="moex-series-genre">Romance</span>
+        </div>
+        <div class="moex-series-links">
+          <a href="LINK_HERE" class="moex-series-btn">Website</a>
+          <a href="LINK_HERE" class="moex-series-btn">Jan.AI</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="moex-series-card">
+      <div class="moex-series-banner"><img src="https://placehold.co/400x200/FBB6C4/935661?text=Devil%27s+Angel" alt="Series banner"></div>
+      <div class="moex-series-body">
+        <h3 class="moex-series-title">The Devil's Angel</h3>
+        <p class="moex-series-desc">They say devils don't need saving. But what if he was begging for it behind a heart that forgot how to hope?</p>
+        <div class="moex-series-genres">
+          <span class="moex-series-genre">Mafia</span>
+          <span class="moex-series-genre">Dead Dove</span>
+          <span class="moex-series-genre">Hurt/Comfort</span>
+        </div>
+        <div class="moex-series-links">
+          <a href="LINK_HERE" class="moex-series-btn">Wattpad</a>
+          <a href="LINK_HERE" class="moex-series-btn">Jan.AI</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="moex-series-card">
+      <div class="moex-series-banner"><img src="https://placehold.co/400x200/F7A0B8/FAF5EC?text=Springrise" alt="Series banner"></div>
+      <div class="moex-series-body">
+        <h3 class="moex-series-title">Springrise County</h3>
+        <p class="moex-series-desc">A short description of this series goes here — what it's about, tone, updates.</p>
+        <div class="moex-series-genres">
+          <span class="moex-series-genre">Slice of Life</span>
+          <span class="moex-series-genre">Drama</span>
+        </div>
+        <div class="moex-series-links">
+          <a href="LINK_HERE" class="moex-series-btn">Jan.AI</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="moex-series-card">
+      <div class="moex-series-banner"><img src="https://placehold.co/400x200/FAE9D7/935661?text=Kings" alt="Series banner"></div>
+      <div class="moex-series-body">
+        <h3 class="moex-series-title">Kings (COD:MW)</h3>
+        <p class="moex-series-desc">Fanfic collection set in the Call of Duty: Modern Warfare universe.</p>
+        <div class="moex-series-genres">
+          <span class="moex-series-genre">Romance</span>
+          <span class="moex-series-genre">Action</span>
+        </div>
+        <div class="moex-series-links">
+          <a href="LINK_HERE" class="moex-series-btn">Wattpad</a>
+          <a href="LINK_HERE" class="moex-series-btn">AO3</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============== AUTO-SLIDING MEDIA SLIDER (squares) ============== -->
+  <!-- EDIT ME: swap image src links. If you change how many photos you
+       have, duplicate the FULL set of .moex-autoslide-sq blocks twice,
+       same as below — that's what keeps the auto-scroll seamless. -->
+  <h2 class="moex-section-title"><span class="moex-halo-dot"></span>Yours.</h2>
+  <div class="moex-autoslider">
+    <div class="moex-autoslider-track">
+
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/F7A0B8/FAF5EC?text=1" data-light-src="https://placehold.co/300x300/F7A0B8/FAF5EC?text=1" data-dark-src="https://placehold.co/300x300/07080A/935661?text=1" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/FBB6C4/935661?text=2" data-light-src="https://placehold.co/300x300/FBB6C4/935661?text=2" data-dark-src="https://placehold.co/300x300/14090c/F0EADC?text=2" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/FAE9D7/935661?text=3" data-light-src="https://placehold.co/300x300/FAE9D7/935661?text=3" data-dark-src="https://placehold.co/300x300/07080A/935661?text=3" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/935661/F0EADC?text=4" data-light-src="https://placehold.co/300x300/935661/F0EADC?text=4" data-dark-src="https://placehold.co/300x300/14090c/F0EADC?text=4" alt="Media"></div>
+
+      <!-- DO NOT TOUCH: duplicate set for the seamless loop -->
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/F7A0B8/FAF5EC?text=1" data-light-src="https://placehold.co/300x300/F7A0B8/FAF5EC?text=1" data-dark-src="https://placehold.co/300x300/07080A/935661?text=1" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/FBB6C4/935661?text=2" data-light-src="https://placehold.co/300x300/FBB6C4/935661?text=2" data-dark-src="https://placehold.co/300x300/14090c/F0EADC?text=2" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/FAE9D7/935661?text=3" data-light-src="https://placehold.co/300x300/FAE9D7/935661?text=3" data-dark-src="https://placehold.co/300x300/07080A/935661?text=3" alt="Media"></div>
+      <div class="moex-autoslide-sq"><img class="moex-theme-img" src="https://placehold.co/300x300/935661/F0EADC?text=4" data-light-src="https://placehold.co/300x300/935661/F0EADC?text=4" data-dark-src="https://placehold.co/300x300/14090c/F0EADC?text=4" alt="Media"></div>
+
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <div class="moex-footer">
+    <p>@moexran<span class="moex-halo-dot"></span>est. 2024<span class="moex-halo-dot"></span>all rights reserved</p>
+  </div>
+
 </div>
 
-<!-- EASTER EGG OVERLAY -->
-<div class="moex-egg-overlay" id="moexEggOverlay">
-  <h2>TRANSMISSION DECRYPTED</h2>
-  <p>"You found the code before you found me. Somehow that feels about right — you were always going to get through my defenses eventually, зайка. Every wolf has exactly one weakness. Congratulations, you're standing in it." — M.</p>
-  <button id="moexEggClose">CLOSE FILE</button>
-</div>
-
+<!-- ============================================================
+     SCRIPT — theme toggle, falling sparkles, and the little
+     "mask slipping" hover swap on the Your Angel title.
+     DO NOT TOUCH unless you know what you're doing.
+     ============================================================ -->
 <script>
 (function(){
-  "use strict";
 
-  /* ---------- custom cursor ---------- */
-  var isFine = window.matchMedia && window.matchMedia('(pointer:fine)').matches;
-  var cursor = document.getElementById('moexCursor');
-  if(isFine){
-    document.body.classList.add('moex-fine-pointer');
-    cursor.classList.add('moex-active');
-    window.addEventListener('mousemove', function(e){
-      cursor.style.transform = 'translate('+e.clientX+'px,'+e.clientY+'px) translate(-50%,-50%)';
-    });
-    document.addEventListener('mouseover', function(e){
-      if(e.target.closest('a,button,.moex-photo,.moex-envelope,.moex-redacted,input[type=range]')){
-        cursor.classList.add('moex-hover');
-      }
-    });
-    document.addEventListener('mouseout', function(e){
-      if(e.target.closest('a,button,.moex-photo,.moex-envelope,.moex-redacted,input[type=range]')){
-        cursor.classList.remove('moex-hover');
-      }
-    });
-  } else {
-    cursor.style.display='none';
-  }
+  /* ---- THEME TOGGLE ---- */
+  var body = document.body;
+  var toggle = document.getElementById('moexThemeToggle');
+  var subtitle = document.getElementById('moexSubtitle');
+  var STORAGE_KEY = 'moex-theme';
 
-  /* ---------- nav active tab on scroll ---------- */
-  var navLinks = document.querySelectorAll('[data-moex-tab]');
-  var sections = Array.prototype.map.call(navLinks, function(l){ return document.querySelector(l.getAttribute('href')); });
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          navLinks.forEach(function(l){ l.classList.remove('moex-active'); });
-          var match = document.querySelector('[href="#'+entry.target.id+'"]');
-          if(match) match.classList.add('moex-active');
-        }
-      });
-    }, {rootMargin:'-40% 0px -50% 0px'});
-    sections.forEach(function(s){ if(s) io.observe(s); });
-  }
+  /* Images that should swap between modes carry class "moex-theme-img"
+     plus data-light-src / data-dark-src attributes. Add those two
+     attributes to any new image (banner, pfp, gallery, slider) and it
+     will automatically swap when the button is clicked. */
+  var themeImages = document.querySelectorAll('.moex-theme-img');
 
-  /* ---------- hero typewriter ---------- */
-  var tw = document.getElementById('moexTypewriter');
-  var twText = "FILED BY: ANGEL   //   STATUS: HOPELESSLY, PERMANENTLY DEVOTED";
-  var i = 0;
-  function typeStep(){
-    if(i <= twText.length){
-      tw.innerHTML = twText.slice(0,i) + '<span class="moex-cursor-blink">▌</span>';
-      i++;
-      setTimeout(typeStep, 38);
-    }
-  }
-  typeStep();
-
-  /* ---------- redacted reveal ---------- */
-  document.querySelectorAll('.moex-redacted').forEach(function(span){
-    span.addEventListener('click', function(){
-      if(span.classList.contains('moex-revealed')){
-        span.classList.remove('moex-revealed');
-        span.textContent = span.dataset.blackout || span.textContent;
-      } else {
-        span.dataset.blackout = span.textContent;
-        span.classList.add('moex-revealed');
-        span.textContent = span.dataset.secret;
-      }
-    });
-  });
-
-  /* ---------- stampcard/dossier-file redact reveal ---------- */
-  document.querySelectorAll('.moex-redact').forEach(function(el){
-    function toggle(){
-      var revealed = el.classList.toggle('moex-revealed');
-      if(revealed){ el.textContent = el.getAttribute('data-value'); }
-      else { el.textContent = '█'.repeat(20); }
-    }
-    el.addEventListener('click', toggle);
-    el.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); } });
-  });
-
-  /* ---------- dossier tabs ---------- */
-  var tabBtns = document.querySelectorAll('.moex-tabbtn');
-  tabBtns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      tabBtns.forEach(function(b){ b.classList.remove('moex-active'); b.setAttribute('aria-selected','false'); });
-      document.querySelectorAll('.moex-tabpanel').forEach(function(p){ p.classList.remove('moex-active'); });
-      btn.classList.add('moex-active');
-      btn.setAttribute('aria-selected','true');
-      document.getElementById(btn.getAttribute('data-tab')).classList.add('moex-active');
-    });
-  });
-
-  /* ---------- imported from brown: evidence wall pin notes ---------- */
-  var moexNoteBox = document.getElementById('moexNote');
-  document.querySelectorAll('.moex-pin').forEach(function(pin){
-    pin.addEventListener('click', function(){
-      moexNoteBox.textContent = pin.getAttribute('data-note');
-      moexNoteBox.classList.add('moex-active');
-      moexNoteBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-  });
-
-  /* ---------- stat bars reveal on scroll ---------- */
-  document.querySelectorAll('.moex-stat-row').forEach(function(row){
-    row.style.setProperty('--moex-val', row.dataset.val + '%');
-  });
-  if('IntersectionObserver' in window){
-    var statIo = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){ entry.target.classList.add('moex-in-view'); }
-      });
-    }, {threshold:.4});
-    document.querySelectorAll('.moex-stat-row').forEach(function(r){ statIo.observe(r); });
-  }
-
-  /* ---------- corkboard strings ---------- */
-  function drawStrings(){
-    var board = document.getElementById('moexCorkboard');
-    var svg = document.getElementById('moexStringSvg');
-    var photos = board.querySelectorAll('.moex-photo');
-    var boardRect = board.getBoundingClientRect();
-    svg.setAttribute('viewBox', '0 0 '+boardRect.width+' '+boardRect.height);
-    svg.innerHTML = '';
-    var pts = [];
-    photos.forEach(function(p){
-      var r = p.getBoundingClientRect();
-      pts.push({
-        x: r.left - boardRect.left + r.width/2,
-        y: r.top - boardRect.top
-      });
-    });
-    for(var k=0;k<pts.length-1;k++){
-      var line = document.createElementNS('http://www.w3.org/2000/svg','line');
-      line.setAttribute('x1', pts[k].x); line.setAttribute('y1', pts[k].y);
-      line.setAttribute('x2', pts[k+1].x); line.setAttribute('y2', pts[k+1].y);
-      svg.appendChild(line);
-    }
-  }
-  window.addEventListener('load', drawStrings);
-  window.addEventListener('resize', drawStrings);
-  setTimeout(drawStrings, 300);
-
-  /* ---------- media slider ---------- */
-  (function(){
-    var track = document.getElementById('moexSliderTrack');
-    var dotsWrap = document.getElementById('moexSliderDots');
-    if(!track) return;
-    var slides = track.querySelectorAll('.moex-slide');
-    var idx = 0;
-
-    slides.forEach(function(_, i){
-      var dot = document.createElement('button');
-      dot.className = 'moex-slider-dot' + (i === 0 ? ' moex-active' : '');
-      dot.setAttribute('aria-label', 'Go to photo ' + (i+1));
-      dot.addEventListener('click', function(){ goTo(i); });
-      dotsWrap.appendChild(dot);
-    });
-
-    function goTo(i){
-      idx = (i + slides.length) % slides.length;
-      track.style.transform = 'translateX(-' + (idx * 100) + '%)';
-      dotsWrap.querySelectorAll('.moex-slider-dot').forEach(function(d, di){
-        d.classList.toggle('moex-active', di === idx);
-      });
-    }
-
-    document.getElementById('moexSliderNext').addEventListener('click', function(){ goTo(idx + 1); });
-    document.getElementById('moexSliderPrev').addEventListener('click', function(){ goTo(idx - 1); });
-  })();
-
-  /* ---------- fake spotify player ---------- */
-  var tracks = [
-    {title:"Me and the Devil", tag:"Soap&Skin", len:227},
-    {title:"LET THE WORLD BURN", tag:"Chris Grey", len:252},
-    {title:"Favorite", tag:"Isabel Larosa", len:238},
-    {title:"Angel", tag:"Massive Attack", len:273},
-    {title:"House of Balloons", tag:"The Weeknd", len:201},
-    {title:"I like the way you kiss me", tag:"Artemas", len:245}
-  ];
-  var curIdx = 0, isPlaying = false, curSeconds = 0, progInterval = null, shuffleOn = false, repeatOn = false;
-  var audioCtx = null, osc = null, gainNode = null, lfo=null;
-
-  var tracklistEl = document.getElementById('moexTracklist');
-  tracks.forEach(function(t,idx){
-    var row = document.createElement('div');
-    row.className = 'moex-track' + (idx===0 ? ' moex-track-active' : '');
-    row.dataset.idx = idx;
-    row.innerHTML = '<span class="moex-track-idx">'+(idx+1).toString().padStart(2,'0')+'</span>'+
-      '<span><span class="moex-track-name">'+t.title+'</span><span class="moex-track-tag">'+t.tag+'</span></span>'+
-      '<span class="moex-track-len">'+fmtTime(t.len)+'</span>';
-    row.addEventListener('click', function(){ loadTrack(idx); if(!isPlaying) togglePlay(); });
-    tracklistEl.appendChild(row);
-  });
-
-  function fmtTime(s){
-    var m = Math.floor(s/60), sec = Math.floor(s%60);
-    return m + ':' + (sec<10?'0':'') + sec;
-  }
-
-  function loadTrack(idx){
-    curIdx = idx; curSeconds = 0;
-    var t = tracks[idx];
-    document.getElementById('moexNowTitle').textContent = t.title;
-    document.getElementById('moexNowTag').textContent = t.tag;
-    document.getElementById('moexTimeTotal').textContent = fmtTime(t.len);
-    document.getElementById('moexTimeCur').textContent = '0:00';
-    document.getElementById('moexProgressFill').style.width = '0%';
-    document.querySelectorAll('.moex-track').forEach(function(r){ r.classList.remove('moex-track-active'); });
-    var active = tracklistEl.querySelector('[data-idx="'+idx+'"]');
-    if(active) active.classList.add('moex-track-active');
-    updateAmbient();
-  }
-
-  function initAudio(){
-    if(audioCtx) return;
-    try{
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      gainNode = audioCtx.createGain();
-      gainNode.gain.value = 0;
-      gainNode.connect(audioCtx.destination);
-      osc = audioCtx.createOscillator();
-      osc.type = 'sine';
-      osc.frequency.value = 55;
-      lfo = audioCtx.createOscillator();
-      lfo.type='sine'; lfo.frequency.value=.15;
-      var lfoGain = audioCtx.createGain(); lfoGain.gain.value = 6;
-      lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
-      osc.connect(gainNode);
-      osc.start(); lfo.start();
-    }catch(e){ /* ambient audio unsupported, silently continue */ }
-  }
-  var muted = false;
-  function updateAmbient(){
-    if(!gainNode) return;
-    var vol = document.getElementById('moexVolume').value / 100;
-    var target = (isPlaying && !muted) ? vol * 0.05 : 0;
-    gainNode.gain.setTargetAtTime(target, audioCtx.currentTime, .4);
-  }
-
-  function togglePlay(){
-    initAudio();
-    isPlaying = !isPlaying;
-    var btn = document.getElementById('moexPlayBtn');
-    btn.textContent = isPlaying ? '⏸' : '▶';
-    document.getElementById('moexVinyl').classList.toggle('moex-spinning', isPlaying);
-    updateAmbient();
-    if(isPlaying){
-      progInterval = setInterval(function(){
-        curSeconds++;
-        var total = tracks[curIdx].len;
-        if(curSeconds >= total){
-          if(repeatOn){ curSeconds = 0; }
-          else { nextTrack(); return; }
-        }
-        document.getElementById('moexTimeCur').textContent = fmtTime(curSeconds);
-        document.getElementById('moexProgressFill').style.width = (curSeconds/total*100)+'%';
-      }, 1000);
+  function applyTheme(mode){
+    if(mode === 'dark'){
+      body.classList.add('moex-dark');
+      toggle.textContent = '🖤';
+      subtitle.textContent = 'your angel // unhinged in the back';
     } else {
-      clearInterval(progInterval);
+      body.classList.remove('moex-dark');
+      toggle.textContent = '🩷';
+      subtitle.textContent = 'your angel // soft on the surface';
     }
-  }
-  function nextTrack(){
-    var idx = shuffleOn ? Math.floor(Math.random()*tracks.length) : (curIdx+1)%tracks.length;
-    loadTrack(idx);
-    if(isPlaying){ clearInterval(progInterval); isPlaying=false; togglePlay(); }
-  }
-  function prevTrack(){
-    var idx = (curIdx-1+tracks.length)%tracks.length;
-    loadTrack(idx);
-    if(isPlaying){ clearInterval(progInterval); isPlaying=false; togglePlay(); }
+
+    themeImages.forEach(function(img){
+      var next = mode === 'dark' ? img.getAttribute('data-dark-src') : img.getAttribute('data-light-src');
+      if(next && img.getAttribute('src') !== next){ img.setAttribute('src', next); }
+    });
   }
 
-  document.getElementById('moexPlayBtn').addEventListener('click', togglePlay);
-  document.getElementById('moexNext').addEventListener('click', nextTrack);
-  document.getElementById('moexPrev').addEventListener('click', prevTrack);
-  document.getElementById('moexShuffle').addEventListener('click', function(){
-    shuffleOn = !shuffleOn; this.classList.toggle('moex-toggle-active', shuffleOn);
-  });
-  document.getElementById('moexRepeat').addEventListener('click', function(){
-    repeatOn = !repeatOn; this.classList.toggle('moex-toggle-active', repeatOn);
-  });
-  document.getElementById('moexVolume').addEventListener('input', updateAmbient);
-  document.getElementById('moexProgressTrack').addEventListener('click', function(e){
-    var rect = this.getBoundingClientRect();
-    var pct = (e.clientX - rect.left) / rect.width;
-    curSeconds = Math.floor(pct * tracks[curIdx].len);
-    document.getElementById('moexTimeCur').textContent = fmtTime(curSeconds);
-    document.getElementById('moexProgressFill').style.width = (pct*100)+'%';
-  });
-  document.getElementById('moexMuteBtn').addEventListener('click', function(){
-    muted = !muted;
-    this.textContent = muted ? '🔇' : '🔈';
-    updateAmbient();
+  var saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch(e) { /* storage unavailable, ignore */ }
+  applyTheme(saved === 'dark' ? 'dark' : 'light');
+
+  toggle.addEventListener('click', function(){
+    var goingDark = !body.classList.contains('moex-dark');
+    applyTheme(goingDark ? 'dark' : 'light');
+    try { localStorage.setItem(STORAGE_KEY, goingDark ? 'dark' : 'light'); } catch(e) { /* ignore */ }
   });
 
-  /* ---------- letters modal ---------- */
-  var letters = [
-    {title:"For the nights he's late", body:"I keep the light on longer than I should. Everyone else in this city locks their doors and prays he stays far away. I leave mine unlocked and pray he doesn't stay away too long. They'd call me foolish for that. I call it faith. He always comes home. He is simply, endlessly, incapable of staying anywhere I am not."},
-    {title:"For the man they don't know", body:"They write reports about a man with no mercy in him. I've seen him carry an injured bird across three streets because he couldn't stand its noise, he said — but I know better. I know a man like that doesn't get to be soft in front of anyone else, so he saves every last drop of it for me. That's not weakness. That's the safest place I've ever stood."},
-    {title:"For whoever reads this after us", body:"If you're reading this, the file survived us, which means someone thought this was worth keeping. Good. Keep it. Let them know a wolf like him found one soft thing in this whole cruel world and refused, absolutely refused, to let it go. Let them know I never once wanted him to."}
-  ];
-  var curLetter = 0;
-  var overlay = document.getElementById('moexModalOverlay');
-  function openLetter(idx){
-    curLetter = idx;
-    document.getElementById('moexModalTitle').textContent = letters[idx].title;
-    document.getElementById('moexModalBody').textContent = letters[idx].body;
-    overlay.classList.add('moex-open');
-  }
-  document.querySelectorAll('.moex-envelope').forEach(function(env){
-    env.addEventListener('click', function(){ openLetter(parseInt(env.dataset.letter,10)); });
-  });
-  document.getElementById('moexModalClose').addEventListener('click', function(){ overlay.classList.remove('moex-open'); });
-  overlay.addEventListener('click', function(e){ if(e.target === overlay) overlay.classList.remove('moex-open'); });
-  document.getElementById('moexModalNext').addEventListener('click', function(){ openLetter((curLetter+1)%letters.length); });
-  document.getElementById('moexModalPrev').addEventListener('click', function(){ openLetter((curLetter-1+letters.length)%letters.length); });
-
-  /* ---------- compatibility slider ---------- */
-  var compatSlider = document.getElementById('moexCompatSlider');
-  var compatReadout = document.getElementById('moexCompatReadout');
-  var wolfPanel = document.querySelector('.moex-compat-wolf');
-  var bunnyPanel = document.querySelector('.moex-compat-bunny');
-  function updateCompat(){
-    var v = parseInt(compatSlider.value,10);
-    wolfPanel.style.opacity = 0.55 + (100-v)/100*0.45;
-    bunnyPanel.style.opacity = 0.55 + v/100*0.45;
-    var msg;
-    if(v < 20) msg = "mostly wolf tonight";
-    else if(v < 45) msg = "leaning wolf, softening at the edges";
-    else if(v <= 55) msg = "perfectly, dangerously balanced";
-    else if(v < 80) msg = "leaning bunny, and he lets her";
-    else msg = "mostly bunny tonight — and he's letting it happen";
-    compatReadout.textContent = msg;
-  }
-  compatSlider.addEventListener('input', updateCompat);
-  updateCompat();
-
-  /* ---------- anniversary counter ---------- */
-  var annivDate = new Date("2019-11-07T00:00:00");
-  function updateAnniv(){
-    var now = new Date();
-    var diffMs = now - annivDate;
-    var days = Math.floor(diffMs / 86400000);
-    document.getElementById('moexAnniversary').textContent = 'DAYS ON FILE TOGETHER: ' + days.toLocaleString();
-  }
-  updateAnniv();
-  setInterval(updateAnniv, 60000);
-
-  /* ---------- konami code easter egg ---------- */
-  var konamiSeq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-  var konamiPos = 0;
-  window.addEventListener('keydown', function(e){
-    var key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    if(key === konamiSeq[konamiPos]){
-      konamiPos++;
-      if(konamiPos === konamiSeq.length){
-        konamiPos = 0;
-        triggerEgg();
+  /* ---- "Your Angel" -> "Your Obsession" hover swap ---- */
+  var angelTitle = document.getElementById('moexAngelTitle');
+  if(angelTitle){
+    var original = angelTitle.lastChild;
+    var altText = angelTitle.getAttribute('data-alt');
+    var originalText = null;
+    // grab the actual text node (last child, after the halo dot span)
+    for (var i = angelTitle.childNodes.length - 1; i >= 0; i--){
+      if (angelTitle.childNodes[i].nodeType === 3 && angelTitle.childNodes[i].textContent.trim().length){
+        originalText = angelTitle.childNodes[i];
+        break;
       }
-    } else {
-      konamiPos = (key === konamiSeq[0]) ? 1 : 0;
     }
-  });
-  function triggerEgg(){
-    document.getElementById('moexEggOverlay').classList.add('moex-open');
-    for(var n=0;n<24;n++){
-      setTimeout(function(){ spawnHeart(); }, n*70);
+    if(originalText){
+      var baseText = originalText.textContent;
+      angelTitle.addEventListener('mouseenter', function(){ originalText.textContent = altText; });
+      angelTitle.addEventListener('mouseleave', function(){ originalText.textContent = baseText; });
     }
   }
-  function spawnHeart(){
-    var h = document.createElement('div');
-    h.className = 'moex-heart-particle';
-    h.textContent = '♥';
-    h.style.left = (Math.random()*100)+'vw';
-    h.style.top = '105vh';
-    h.style.opacity = '1';
-    document.body.appendChild(h);
-    var duration = 2200 + Math.random()*1500;
-    var startTime = performance.now();
-    function anim(t){
-      var p = (t - startTime)/duration;
-      if(p >= 1){ h.remove(); return; }
-      h.style.top = (105 - p*120) + 'vh';
-      h.style.opacity = String(1-p);
-      requestAnimationFrame(anim);
+
+  /* ---- FALLING SPARKLES + HEARTS ---- */
+  var layer = document.getElementById('moexFallLayer');
+  var symbols = ['♡','✧','⋆','✦','💗'];
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(!reduceMotion && layer){
+    var COUNT = 22;
+    for(var n = 0; n < COUNT; n++){
+      var bit = document.createElement('span');
+      bit.className = 'moex-fall-bit';
+      bit.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      var left = Math.random() * 100;
+      var size = 10 + Math.random() * 16;
+      var duration = 9 + Math.random() * 10;
+      var delay = Math.random() * -20;
+      var sway = (Math.random() * 80 - 40) + 'px';
+      bit.style.left = left + 'vw';
+      bit.style.fontSize = size + 'px';
+      bit.style.animationDuration = duration + 's';
+      bit.style.animationDelay = delay + 's';
+      bit.style.setProperty('--moex-sway', sway);
+      layer.appendChild(bit);
     }
-    requestAnimationFrame(anim);
   }
-  document.getElementById('moexEggClose').addEventListener('click', function(){
-    document.getElementById('moexEggOverlay').classList.remove('moex-open');
-  });
 
 })();
 </script>
+
 </body>
 </html>
