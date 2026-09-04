@@ -118,6 +118,14 @@
       linear-gradient(120deg, var(--moex-hot) 0%, var(--moex-pink-3) 35%, var(--moex-pink-2) 65%, var(--moex-pink-1) 100%);
     overflow:hidden;
   }
+  .moex-banner-img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+  }
   .moex-banner::before{
     content:"";
     position:absolute;
@@ -169,6 +177,13 @@
     color:var(--moex-floral);
     flex-shrink:0;
     position:relative;
+    overflow:hidden;
+  }
+  .moex-pfp-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
   }
   .moex-pfp-ring{
     position:absolute;
@@ -423,6 +438,13 @@
     transition:transform .2s ease;
   }
   .moex-gallery-item:hover{transform:scale(1.03);}
+  .moex-gallery-item img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
   .moex-gallery-like{
     position:absolute;
     bottom:10px;
@@ -485,6 +507,12 @@
     font-size:3rem;
     color:#fff;
     position:relative;
+    overflow:hidden;
+  }
+  .moex-lightbox-inner img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
   }
   .moex-lightbox-close{
     position:absolute;
@@ -571,6 +599,14 @@
     color:rgba(255,255,255,.9);
     font-size:1.8rem;
     position:relative;
+    overflow:hidden;
+  }
+  .moex-series-banner img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
   }
   .moex-series-heart{
     position:absolute;
@@ -610,6 +646,11 @@
     padding:4px 10px;
     border-radius:999px;
   }
+  .moex-series-cta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
   .moex-series-cta{
     display:inline-flex;
     align-items:center;
@@ -623,6 +664,12 @@
     transition:background .18s ease, transform .18s ease;
   }
   .moex-series-cta:hover{background:#ff447c; transform:translateX(2px);}
+  .moex-series-cta.moex-series-cta-alt{
+    background:transparent;
+    color:var(--moex-hot);
+    border:1.5px solid var(--moex-pink-2);
+  }
+  .moex-series-cta.moex-series-cta-alt:hover{background:var(--moex-blush); border-color:var(--moex-hot);}
 
   /* ============ WRITING CARDS (banner on left) ============ */
   .moex-writing-grid{
@@ -652,6 +699,14 @@
     color:rgba(255,255,255,.9);
     font-size:1.7rem;
     position:relative;
+    overflow:hidden;
+  }
+  .moex-writing-banner img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
   }
   .moex-writing-heart{
     position:absolute;
@@ -708,6 +763,95 @@
     .moex-writing-banner{flex:0 0 110px; width:100%;}
   }
 
+  /* ---- writing category filters ---- */
+  .moex-writing-filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:16px;
+  }
+  .moex-writing-filter-btn{
+    border:1.5px solid var(--moex-pink-2);
+    background:var(--moex-floral);
+    color:var(--moex-ink);
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:.8rem;
+    font-weight:700;
+    transition:all .18s ease;
+  }
+  .moex-writing-filter-btn:hover{border-color:var(--moex-hot); transform:translateY(-1px);}
+  .moex-writing-filter-btn.moex-active{
+    background:var(--moex-hot);
+    border-color:var(--moex-hot);
+    color:var(--moex-floral);
+  }
+  .moex-writing-card.moex-hidden{display:none;}
+
+  /* ---- category ribbon on card banner ---- */
+  .moex-writing-category{
+    position:absolute;
+    top:10px; right:10px;
+    font-size:.6rem;
+    font-weight:800;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    padding:4px 9px;
+    border-radius:999px;
+    background:rgba(36,16,23,.55);
+    color:var(--moex-floral);
+    backdrop-filter:blur(2px);
+  }
+  .moex-writing-category.moex-cat-fanfic{background:rgba(255,92,137,.8);}
+
+  /* ---- title row + completion status pill ---- */
+  .moex-writing-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:6px;
+  }
+  .moex-writing-top .moex-writing-title{margin:0;}
+  .moex-writing-status{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:.62rem;
+    font-weight:800;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    padding:4px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .moex-writing-status-dot{
+    width:7px; height:7px; border-radius:50%;
+    flex-shrink:0;
+  }
+  .moex-writing-status.moex-status-ongoing{
+    background:rgba(56,217,154,.15);
+    color:#1f9d6c;
+    border:1px solid rgba(56,217,154,.4);
+  }
+  .moex-writing-status.moex-status-ongoing .moex-writing-status-dot{
+    background:#38d99a;
+    animation:moex-pulse 1.8s infinite;
+  }
+  .moex-writing-status.moex-status-completed{
+    background:var(--moex-blush);
+    color:var(--moex-hot);
+    border:1px solid var(--moex-pink-2);
+  }
+  .moex-writing-status.moex-status-completed .moex-writing-status-dot{
+    background:var(--moex-hot);
+  }
+
+  @media (max-width:400px){
+    .moex-writing-top{flex-wrap:wrap;}
+  }
+
   /* ============ FOOTER ============ */
   .moex-footer{
     text-align:center;
@@ -754,6 +898,37 @@
   }
 
   :focus-visible{outline:2.5px solid var(--moex-hot); outline-offset:2px;}
+
+  /* ============ EASTER EGG ============ */
+  .moex-konami-btn{
+    position:fixed;
+    left:50%;
+    bottom:26px;
+    transform:translateX(-50%) translateY(20px) scale(.9);
+    z-index:300;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--moex-ink);
+    color:var(--moex-floral);
+    font-family:var(--moex-font-head);
+    font-weight:600;
+    font-size:.95rem;
+    padding:14px 22px;
+    border-radius:999px;
+    border:2px solid var(--moex-hot);
+    box-shadow:0 10px 30px rgba(255,92,137,.4);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .moex-konami-btn.moex-visible{
+    opacity:1;
+    pointer-events:auto;
+    transform:translateX(-50%) translateY(0) scale(1);
+  }
+  .moex-konami-btn:hover{background:#3a1d29; transform:translateX(-50%) translateY(-3px) scale(1.03);}
+  .moex-konami-btn .moex-konami-icon{font-size:1.2rem;}
 </style>
 </head>
 <body class="moex-body">
@@ -772,21 +947,22 @@
 
     <!-- BANNER -->
     <header class="moex-banner">
-      <span class="moex-banner-tagline">✨ new drops every friday</span>
+      <img class="moex-banner-img" src="PASTE_BANNER_URL_HERE" alt="">
+      <span class="moex-banner-tagline">✨ new drops every week!</span>
     </header>
 
     <!-- PROFILE ROW -->
     <div class="moex-profile-row">
       <div class="moex-pfp">
         <div class="moex-pfp-ring"></div>
-        🎀
+        <img class="moex-pfp-img" src="PASTE_PFP_URL_HERE" alt="profile picture">
       </div>
       <div class="moex-identity">
         <div class="moex-username-row">
-          <span class="moex-username">@moexran</span>
+          <span class="moex-username">@Moexran</span>
           <button class="moex-copy-btn" id="moex-copy-btn" type="button">copy</button>
         </div>
-        <div class="moex-handle-sub">she/her · 22 · your favorite pixel princess 💌</div>
+        <div class="moex-handle-sub">she/her · 23 · your favorite cupid 💌</div>
       </div>
       <button class="moex-follow-btn" id="moex-follow-btn" type="button">
         <span id="moex-follow-icon">🩷</span>
@@ -799,14 +975,14 @@
       <div class="moex-status-box">
         <div class="moex-status-line">
           <span class="moex-status-dot"></span>
-          online now · streaming in 2h
+          Always creating. Always inspired.
         </div>
         <div class="moex-tag-row" id="moex-tag-row">
-          <button class="moex-tag-btn moex-active" type="button">🎮 gaming</button>
-          <button class="moex-tag-btn" type="button">🎨 art</button>
-          <button class="moex-tag-btn" type="button">🌙 late night vibes</button>
-          <button class="moex-tag-btn" type="button">💌 asks open</button>
-          <button class="moex-tag-btn" type="button">🍓 soft mood</button>
+          <button class="moex-tag-btn moex-active" type="button">📄Writer</button>
+          <button class="moex-tag-btn" type="button">📁Bot creator</button>
+          <button class="moex-tag-btn" type="button">🧸 DDLG</button>
+          <button class="moex-tag-btn" type="button">💌 Lover Gurl</button>
+          <button class="moex-tag-btn" type="button">🪽 Angel </button>
         </div>
       </div>
     </section>
@@ -816,26 +992,37 @@
       <h2 class="moex-section-title"><span class="moex-emoji">💗</span> about me</h2>
       <div class="moex-about-card">
         <p class="moex-about-text">
-          hii, i'm ran! i draw, ramble about horror games at 2am, and post way too many selfies.
-          this corner of the internet is my little pink scrapbook — <strong>come say hi</strong>,
-          i promise i bite gently. 🐰
+          Hihi! I'm Moe! or Moemoe. I write a lot because my brain never shuts up. I love writing sooo much, that I also make AI-RP bots too! This corner of the internet is my little pink scrapbook, so <strong>come say hi!</strong>,
+          I promise I bite gently~ 🐰
         </p>
 
+<p> <strong>💬 My socials</strong> </p>
         <div class="moex-link-btn-row">
-          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">🐦 twitter</a>
-          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">📸 instagram</a>
-          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">🎥 twitch</a>
-          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">💬 discord</a>
-          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">☕ ko-fi</a>
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">🗂️Caard</a>
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">💬Discord Server (18+)</a>
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">📍Pinterest</a>
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">☕ Ko-Fi</a>
+        </div>
+
+<p> <strong>📝 My writings</strong> </p>
+        <div class="moex-link-btn-row">
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">📙 Wattpad</a>
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">📕AO3</a>
+        </div>
+
+<p> <strong>🤖 My bots</strong> </p>
+        <div class="moex-link-btn-row">
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">🧹Janitor.AI</a>
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">🥘Saucepan</a>
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">🫰Charsnap</a>
+          <a class="moex-link-btn" href="#" target="_blank" rel="noopener">🐲Wyvern</a>
         </div>
 
         <div class="moex-more-links-box">
-          <p class="moex-more-links-title">more places to find me</p>
+          <p class="moex-more-links-title">other links:</p>
           <ul class="moex-more-links-list">
-            <li><a href="#" target="_blank" rel="noopener">my playlist for rainy days <span class="moex-arrow">→</span></a></li>
-            <li><a href="#" target="_blank" rel="noopener">wishlist (fully optional, no pressure!) <span class="moex-arrow">→</span></a></li>
-            <li><a href="#" target="_blank" rel="noopener">fan art tag archive <span class="moex-arrow">→</span></a></li>
-            <li><a href="#" target="_blank" rel="noopener">newsletter — soft launches here first <span class="moex-arrow">→</span></a></li>
+            <li><a href="#" target="_blank" rel="noopener">my fave playlist <span class="moex-arrow">→</span></a></li>
+            <li><a href="#" target="_blank" rel="noopener">my CSS resources <span class="moex-arrow">→</span></a></li>
           </ul>
         </div>
       </div>
@@ -861,38 +1048,39 @@
       <div class="moex-accordion" id="moex-accordion">
         <div class="moex-dropdown">
           <button class="moex-dropdown-head" type="button">
-            <span>what's your posting schedule?</span>
+            <span>What's your posting schedule?</span>
             <span class="moex-chevron">⌄</span>
           </button>
           <div class="moex-dropdown-body">
-            <p>new gallery drops every friday, streams tuesday &amp; saturday nights, and random doodle dumps whenever inspiration hits!</p>
+            <p>As for now, there's no set schedule. I mostly bots post on JAI, with at least 1-4 bots per month. Meanwhile, for novels, I try to post 1-3 chapters per month.</p>
           </div>
         </div>
         <div class="moex-dropdown">
           <button class="moex-dropdown-head" type="button">
-            <span>do you take commissions?</span>
+            <span>Do you take commissions?</span>
             <span class="moex-chevron">⌄</span>
           </button>
           <div class="moex-dropdown-body">
-            <p>occasionally! slots open on my discord — join and turn on notifications so you don't miss the form.</p>
+            <p>Not yet! I've been planning to open one, but we shall see! Do keep an eye on my profiles to see if I ever open up!</p>
           </div>
         </div>
         <div class="moex-dropdown">
           <button class="moex-dropdown-head" type="button">
-            <span>can i send fan art or asks?</span>
+            <span>Can I send fan art or asks?</span>
             <span class="moex-chevron">⌄</span>
           </button>
           <div class="moex-dropdown-body">
-            <p>always! tag me anywhere or drop it in my asks box — i reread every single one, it makes my whole week 🩷</p>
+            <p>Always! You can find me in my server, or DM me on my Discord!</p>
           </div>
         </div>
         <div class="moex-dropdown">
           <button class="moex-dropdown-head" type="button">
-            <span>where do i go for exclusive content?</span>
+            <span>What are your yeses and nos?</span>
             <span class="moex-chevron">⌄</span>
           </button>
           <div class="moex-dropdown-body">
-            <p>check the series cards below — each one links out to where that set of content lives!</p>
+            <p><b>Yes:</b> Fluff, Romance, Comedy, DILF, Hurt/Comfort Light Angst, Dead Dove; Do Not Eat</p>
+            <p><b>No:</b> Kink-shaming, NTR (or any kind of infidelity), Real life crimes or tragedy, Minors (in any depiction)</p>
           </div>
         </div>
       </div>
@@ -909,18 +1097,28 @@
     <!-- WRITING CARDS -->
     <section class="moex-section" id="moex-writing">
       <h2 class="moex-section-title"><span class="moex-emoji">📝</span> my writing</h2>
+      <div class="moex-writing-filters" id="moex-writing-filters">
+        <button class="moex-writing-filter-btn moex-active" type="button" data-filter="all">all</button>
+        <button class="moex-writing-filter-btn" type="button" data-filter="original">📖 original novels</button>
+        <button class="moex-writing-filter-btn" type="button" data-filter="fanfic">🖋️ fanfics</button>
+      </div>
       <div class="moex-writing-grid" id="moex-writing-grid">
         <!-- cards injected by JS -->
       </div>
     </section>
 
     <footer class="moex-footer">
-      made with <span class="moex-heart">♥</span> by @moexran · thanks for stopping by
+      made with <span class="moex-heart">♥</span> @moexran · since 2024 · thanks for stopping by
     </footer>
 
   </div>
 
   <button class="moex-top-btn" id="moex-top-btn" type="button" aria-label="back to top">↑</button>
+
+  <a class="moex-konami-btn" id="moex-konami-btn" href="PASTE_DISCORD_PROFILE_URL_HERE" target="_blank" rel="noopener">
+    <span class="moex-konami-icon">🎮</span>
+    <span>you found me! come say hi on discord</span>
+  </a>
 
   <div class="moex-lightbox" id="moex-lightbox">
     <div class="moex-lightbox-inner" id="moex-lightbox-inner">
@@ -1021,19 +1219,19 @@
 
   /* ---------- gallery: build items ---------- */
   var galleryData = [
-    {emoji:'🌸', likes:128},
-    {emoji:'🎀', likes:96},
-    {emoji:'💌', likes:214},
-    {emoji:'🍓', likes:73},
-    {emoji:'🩰', likes:150},
-    {emoji:'🧸', likes:61}
+    {img:"PASTE_GALLERY_IMG_1_HERE", likes:128},
+    {img:"PASTE_GALLERY_IMG_2_HERE", likes:96},
+    {img:"PASTE_GALLERY_IMG_3_HERE", likes:214},
+    {img:"PASTE_GALLERY_IMG_4_HERE", likes:73},
+    {img:"PASTE_GALLERY_IMG_5_HERE", likes:150},
+    {img:"PASTE_GALLERY_IMG_6_HERE", likes:61}
   ];
   var galleryEl = document.getElementById('moex-gallery-track');
   galleryData.forEach(function(item, idx){
     var fig = document.createElement('div');
     fig.className = 'moex-gallery-item';
-    fig.setAttribute('data-emoji', item.emoji);
-    fig.innerHTML = item.emoji +
+    fig.setAttribute('data-img', item.img);
+    fig.innerHTML = '<img src="' + item.img + '" alt="gallery image ' + (idx + 1) + '" loading="lazy">' +
       '<button class="moex-gallery-like" type="button" data-liked="false" data-count="' + item.likes + '">♡ ' + item.likes + '</button>';
     galleryEl.appendChild(fig);
   });
@@ -1053,7 +1251,7 @@
     }
     var item = e.target.closest('.moex-gallery-item');
     if(item){
-      openLightbox(item.getAttribute('data-emoji'));
+      openLightbox(item.getAttribute('data-img'));
     }
   });
 
@@ -1068,8 +1266,8 @@
   /* ---------- lightbox ---------- */
   var lightbox = document.getElementById('moex-lightbox');
   var lightboxEmoji = document.getElementById('moex-lightbox-emoji');
-  function openLightbox(emoji){
-    lightboxEmoji.textContent = emoji;
+  function openLightbox(imgUrl){
+    lightboxEmoji.innerHTML = '<img src="' + imgUrl + '" alt="enlarged gallery image">';
     lightbox.classList.add('moex-open');
   }
   function closeLightbox(){
@@ -1094,36 +1292,46 @@
   /* ---------- series cards: build ---------- */
   var seriesData = [
     {
-      emoji:'🍓',
-      heart:'💗',
-      title:'strawberry nights',
-      desc:'soft pastel photosets shot on film, dropping monthly. cozy, dreamy, a little nostalgic.',
-      tags:['#photoset','#pastel','#monthly'],
-      cta:'view series'
+      img:"PASTE_SERIES_IMG_STRAWBERRY_NIGHTS_HERE",
+      heart:"💗",
+      title:"Summerset University",
+      desc:"soft pastel photosets shot on film, dropping monthly. cozy, dreamy, a little nostalgic.",
+      tags:["#photoset","#pastel","#monthly"],
+      links:[
+        {label:"Website", url:"#"},
+        {label:"Bots (JAI)", url:"#"}
+      ]
     },
     {
-      emoji:'🎮',
-      heart:'🕹️',
-      title:'late night streams',
-      desc:'weekly VODs from horror game nights — screaming, snacks, and chat chaos included.',
-      tags:['#twitch','#vod','#weekly'],
-      cta:'watch vods'
+      img:"PASTE_SERIES_IMG_LATE_NIGHT_STREAMS_HERE",
+      heart:"🕹️",
+      title:"The Devil's Angel",
+      desc:"weekly VODs from horror game nights — screaming, snacks, and chat chaos included.",
+      tags:["#twitch","#vod","#weekly"],
+      links:[
+        {label:"Website (WIP)", url:"#"},
+        {label:"Bots (JAI)", url:"#"}
+      ]
     },
     {
-      emoji:'🎨',
-      heart:'🖌️',
-      title:'sketchbook diaries',
-      desc:'behind-the-scenes doodles, wip art, and process videos i don\'t post anywhere else.',
-      tags:['#art','#process','#exclusive'],
-      cta:'peek inside'
+      img:"PASTE_SERIES_IMG_SKETCHBOOK_DIARIES_HERE",
+      heart:"🖌️",
+      title:"Springrise",
+      desc:"behind-the-scenes doodles, wip art, and process videos i don't post anywhere else.",
+      tags:["#art","#process","#exclusive"],
+      links:[
+        {label:"Bots (JAI)", url:"#"}
+      ]
     },
     {
-      emoji:'💌',
-      heart:'✉️',
-      title:'ask ran anything',
-      desc:'a running archive of asks and answers — confessions, hot takes, and way too honest advice.',
-      tags:['#asks','#community'],
-      cta:'read archive'
+      img:"PASTE_SERIES_IMG_ASK_RAN_ANYTHING_HERE",
+      heart:"✉️",
+      title:"Land of Crowns",
+      desc:"a running archive of asks and answers — confessions, hot takes, and way too honest advice.",
+      tags:["#asks","#community"],
+      links:[
+        {label:"Bots (JAI)", url:"#"}
+      ]
     }
   ];
   var seriesGrid = document.getElementById('moex-series-grid');
@@ -1131,12 +1339,14 @@
     var card = document.createElement('article');
     card.className = 'moex-series-card';
     card.innerHTML =
-      '<div class="moex-series-banner">' + s.emoji + '<span class="moex-series-heart">' + s.heart + '</span></div>' +
+      '<div class="moex-series-banner"><img src="' + s.img + '" alt="' + s.title + '" loading="lazy"><span class="moex-series-heart">' + s.heart + '</span></div>' +
       '<div class="moex-series-body">' +
         '<div class="moex-series-top"><h3 class="moex-series-title">' + s.title + '</h3></div>' +
         '<p class="moex-series-desc">' + s.desc + '</p>' +
         '<div class="moex-series-tags">' + s.tags.map(function(t){ return '<span class="moex-series-tag">' + t + '</span>'; }).join('') + '</div>' +
-        '<a class="moex-series-cta" href="#" target="_blank" rel="noopener">' + s.cta + ' →</a>' +
+        '<div class="moex-series-cta-row">' + s.links.map(function(l, i){
+          return '<a class="moex-series-cta' + (i > 0 ? ' moex-series-cta-alt' : '') + '" href="' + l.url + '" target="_blank" rel="noopener">' + l.label + ' →</a>';
+        }).join('') + '</div>' +
       '</div>';
     seriesGrid.appendChild(card);
   });
@@ -1144,43 +1354,101 @@
   /* ---------- writing cards: build ---------- */
   var writingData = [
     {
-      emoji:'📖',
-      heart:'🩷',
-      title:'diary of a pixel princess',
-      desc:'a running personal blog — late-night thoughts, soft life updates, and the occasional overshare.',
-      tags:['#blog','#personal','#weekly'],
-      cta:'start reading'
+      img:"PASTE_WRITING_IMG_PIXEL_PRINCESS_HERE",
+      heart:"🩷",
+      title:"The Devil's Angel",
+      desc:"a running personal blog — late-night thoughts, soft life updates, and the occasional overshare.",
+      tags:["#romance","#mafia","#foundfamily","#DD:DNE"],
+      cta:"Wattpad",
+      category:"original",
+      status:"completed"
     },
     {
-      emoji:'🌙',
-      heart:'✨',
-      title:'moonlit short stories',
-      desc:'a growing collection of cozy, slightly spooky short fiction. new chapters posted every other week.',
-      tags:['#fiction','#series','#cozy-horror'],
-      cta:'read chapters'
+      img:"PASTE_WRITING_IMG_MOONLIT_STORIES_HERE",
+      heart:"✨",
+      title:"Your Perfect Girl",
+      desc:"a growing collection of cozy, slightly spooky short fiction. new chapters posted every other week.",
+      tags:["#romance","#hurtcomfort","#highschool","#DD:DNE"],
+      cta:"Wattpad",
+      category:"original",
+      status:"ongoing"
     },
     {
-      emoji:'💭',
-      heart:'🎀',
-      title:'letters i never sent',
-      desc:'poetry and little letters written in the moment — soft, honest, sometimes a little too much.',
-      tags:['#poetry','#letters'],
-      cta:'open archive'
+      img:"PASTE_WRITING_IMG_LETTERS_HERE",
+      heart:"🎀",
+      title:"In the Company of Your Shadows",
+      desc:"poetry and little letters written in the moment — soft, honest, sometimes a little too much.",
+      tags:["#COD:MW","#PhillipGravesxOFL","hurt/comfort","DD:DNE"],
+      cta:"Wattpad",
+      category:"fanfic",
+      status:"completed"
+    },
+    {
+      img:"PASTE_WRITING_IMG_FANFIC_HERE",
+      heart:"💌",
+      title:"Bloodhound",
+      desc:"paste a short blurb here — fandom, pairing, vibe, whatever hooks a reader in one line.",
+      tags:["#COD:MW","#VladimirMakarovxOFL","hurt/comfort","DD:DNE"],
+      cta:"Wattpad",
+      category:"fanfic",
+      status:"ongoing"
     }
   ];
   var writingGrid = document.getElementById('moex-writing-grid');
+  var writingCategoryLabels = {original:"original", fanfic:"fanfic"};
+  var writingStatusLabels = {ongoing:"ongoing", completed:"completed"};
   writingData.forEach(function(w){
     var card = document.createElement('article');
     card.className = 'moex-writing-card';
+    card.setAttribute('data-category', w.category || 'original');
+    var catLabel = writingCategoryLabels[w.category] || w.category;
+    var statusLabel = writingStatusLabels[w.status] || w.status;
     card.innerHTML =
-      '<div class="moex-writing-banner">' + w.emoji + '<span class="moex-writing-heart">' + w.heart + '</span></div>' +
+      '<div class="moex-writing-banner"><img src="' + w.img + '" alt="' + w.title + '" loading="lazy"><span class="moex-writing-heart">' + w.heart + '</span>' +
+        '<span class="moex-writing-category' + (w.category === 'fanfic' ? ' moex-cat-fanfic' : '') + '">' + catLabel + '</span></div>' +
       '<div class="moex-writing-body">' +
-        '<h3 class="moex-writing-title">' + w.title + '</h3>' +
+        '<div class="moex-writing-top">' +
+          '<h3 class="moex-writing-title">' + w.title + '</h3>' +
+          '<span class="moex-writing-status moex-status-' + w.status + '"><span class="moex-writing-status-dot"></span>' + statusLabel + '</span>' +
+        '</div>' +
         '<p class="moex-writing-desc">' + w.desc + '</p>' +
         '<div class="moex-writing-tags">' + w.tags.map(function(t){ return '<span class="moex-writing-tag">' + t + '</span>'; }).join('') + '</div>' +
         '<a class="moex-writing-cta" href="#" target="_blank" rel="noopener">' + w.cta + ' →</a>' +
       '</div>';
     writingGrid.appendChild(card);
+  });
+
+  /* ---------- writing: category filter ---------- */
+  document.getElementById('moex-writing-filters').addEventListener('click', function(e){
+    var btn = e.target.closest('.moex-writing-filter-btn');
+    if(!btn) return;
+    this.querySelectorAll('.moex-writing-filter-btn').forEach(function(b){ b.classList.remove('moex-active'); });
+    btn.classList.add('moex-active');
+    var filter = btn.getAttribute('data-filter');
+    writingGrid.querySelectorAll('.moex-writing-card').forEach(function(card){
+      var matches = filter === 'all' || card.getAttribute('data-category') === filter;
+      card.classList.toggle('moex-hidden', !matches);
+    });
+  });
+
+  /* ---------- konami code easter egg ---------- */
+  var konamiSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  var konamiProgress = 0;
+  var konamiBtn = document.getElementById('moex-konami-btn');
+
+  document.addEventListener('keydown', function(e){
+    var key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if(key === konamiSequence[konamiProgress]){
+      konamiProgress++;
+      if(konamiProgress === konamiSequence.length){
+        konamiProgress = 0;
+        konamiBtn.classList.add('moex-visible');
+        var rect = konamiBtn.getBoundingClientRect();
+        spawnBurst(rect.left + rect.width/2, rect.top);
+      }
+    } else {
+      konamiProgress = (key === konamiSequence[0]) ? 1 : 0;
+    }
   });
 
 })();
