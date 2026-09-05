@@ -496,8 +496,8 @@
   }
   .moex-lightbox.moex-open{display:flex;}
   .moex-lightbox-inner{
-    width:min(360px, 90vw);
-    height:min(460px, 70vh);
+    max-width:90vw;
+    max-height:85vh;
     border-radius:var(--moex-radius-lg);
     background:linear-gradient(160deg, var(--moex-pink-1), var(--moex-hot));
     display:flex;
@@ -510,9 +510,13 @@
     overflow:hidden;
   }
   .moex-lightbox-inner img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+    display:block;
+    max-width:90vw;
+    max-height:85vh;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    border-radius:var(--moex-radius-lg);
   }
   .moex-lightbox-close{
     position:absolute;
@@ -700,6 +704,7 @@
     font-size:1.7rem;
     position:relative;
     overflow:hidden;
+    cursor:pointer;
   }
   .moex-writing-banner img{
     position:absolute;
@@ -1421,6 +1426,15 @@
         '<a class="moex-writing-cta" href="' + w.url + '" target="_blank" rel="noopener">' + w.cta + ' →</a>' +
       '</div>';
     writingGrid.appendChild(card);
+  });
+
+  writingGrid.addEventListener('click', function(e){
+    var writingBanner = e.target.closest('.moex-writing-banner');
+    if(!writingBanner) return;
+    var writingImg = writingBanner.querySelector('img');
+    if(writingImg){
+      openLightbox(writingImg.getAttribute('src'));
+    }
   });
 
   /* ---------- writing: category filter ---------- */
