@@ -635,7 +635,17 @@
     color:#4a3038;
     line-height:1.5;
     margin:0 0 12px;
+    /* fixed height + scroll instead of stretching the card */
+    height:calc(1.5em * var(--moex-series-desc-lines, 4));
+    overflow-y:auto;
+    padding-right:6px;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:var(--moex-pink-2) transparent;
   }
+  .moex-series-desc::-webkit-scrollbar{width:5px;}
+  .moex-series-desc::-webkit-scrollbar-track{background:transparent;}
+  .moex-series-desc::-webkit-scrollbar-thumb{background:var(--moex-pink-2); border-radius:999px;}
   .moex-series-tags{
     display:flex;
     flex-wrap:wrap;
@@ -734,7 +744,17 @@
     color:#4a3038;
     line-height:1.5;
     margin:0 0 12px;
+    /* fixed height + scroll instead of stretching the card */
+    height:calc(1.5em * var(--moex-writing-desc-lines, 5));
+    overflow-y:auto;
+    padding-right:6px;
+    overscroll-behavior:contain;
+    scrollbar-width:thin;
+    scrollbar-color:var(--moex-pink-2) transparent;
   }
+  .moex-writing-desc::-webkit-scrollbar{width:5px;}
+  .moex-writing-desc::-webkit-scrollbar-track{background:transparent;}
+  .moex-writing-desc::-webkit-scrollbar-thumb{background:var(--moex-pink-2); border-radius:999px;}
   .moex-writing-tags{
     display:flex;
     flex-wrap:wrap;
@@ -1363,7 +1383,7 @@
       img:"https://file.garden/ad35P9foF0kAW7I8/TheDevilsAngel.jpg",
       heart:"🩷",
       title:"The Devil's Angel",
-      desc:"a running personal blog — late-night thoughts, soft life updates, and the occasional overshare.",
+      desc:"When ambitious law student Evelyn Moore saved a bleeding stranger from a lethal assassination attempt, she didn't just save a life—she invoked the obsessive devotion of Cyrille Allard, the ruthless, enigmatic kingpin of a massive mafia empire. Swept into a whirlwind of dark desire, lethal deception, and bloody power struggles, Evelyn is dragged deep into a ruthless shadowy domain where loyalty is dead and betrayal waits in every breath. With a vengeful rival brother waging all-out war for control and the crosshairs of a criminal underworld closing in, love becomes their most dangerous weapon. To survive the darkness, they must defy the world—<b>or be completely torn apart by the very shadows that bind them.</b>",
       tags:["#romance","#mafia","#foundfamily","#DD:DNE"],
       cta:"Wattpad",
       url:"https://www.wattpad.com/story/366543079-the-devil%27s-angel-the-wattys-2025",
@@ -1374,7 +1394,7 @@
       img:"https://file.garden/ad35P9foF0kAW7I8/YourPerfectGirl.jpg",
       heart:"✨",
       title:"Your Perfect Girl",
-      desc:"When ambitious law student Evelyn Moore saved a bleeding stranger from a lethal assassination attempt, she didn't just save a life—she invoked the obsessive devotion of Cyrille Allard, the ruthless, enigmatic kingpin of a massive mafia empire. Swept into a whirlwind of dark desire, lethal deception, and bloody power struggles, Evelyn is dragged deep into a ruthless shadowy domain where loyalty is dead and betrayal waits in every breath.",
+      desc:"Behind the glittering crown of Summerset High's untouchable golden girl lies a suffocating secret: a desperate fear that love is conditional on perfection. Enter Kane Hopkins—the icy, calculating student council president who lives by cold logic, rigid schedules, and strict control. To him, Daphne Calbot is a storm of uncontrolled chaos; to her, he is a machine allergic to joy. But when a disastrous pep rally forces the immaculate cheer captain and the stoic boy genius into explosive proximity, their carefully constructed worlds shatter. Beneath the razor-sharp banter and public spectacle, Kane becomes the only person who sees through Daphne's flawless facade, while Daphne becomes the sole beautiful ruin Kane is willing to surrender his control for. Trapped between haunting past traumas, relentless social pressures, and the glaring spotlight of a school waiting for them to break, two polar opposites must risk exposing their rawest vulnerabilities—<b>or lose the only true connection they've ever known.</b>",
       tags:["#romance","#hurtcomfort","#highschool","#DD:DNE"],
       cta:"Wattpad",
       url:"https://www.wattpad.com/story/383918175-your-perfect-girl",
@@ -1385,7 +1405,7 @@
       img:"https://file.garden/ad35P9foF0kAW7I8/ShadowCoompany.jpg",
       heart:"🎀",
       title:"In the Company of Your Shadows",
-      desc:"poetry and little letters written in the moment — soft, honest, sometimes a little too much.",
+      desc:"𝐸𝑣𝑒𝑛 𝑤ℎ𝑒𝑛 𝑡ℎ𝑒 𝑤ℎ𝑜𝑙𝑒 𝑤𝑜𝑟𝑙𝑑 𝑐𝑎𝑠𝑡𝑒𝑑 ℎ𝑖𝑚 𝑎𝑠 𝑎 𝑡𝑟𝑎𝑖𝑡𝑜𝑟, ℎ𝑒 𝑤𝑎𝑠 𝑠𝑡𝑖𝑙𝑙 ℎ𝑒𝑟 𝑒𝑣𝑒𝑟𝑦𝑡ℎ𝑖𝑛𝑔. In the midst of a world filled with deception and lies, would her loyalty shine through the darkness of his shadows? or would she drown in the abyss.",
       tags:["#COD:MW","#PhillipGraves","hurt/comfort","DD:DNE"],
       cta:"Wattpad",
       url:"https://www.wattpad.com/story/371526266-in-the-company-of-your-shadows-phillip-graves-x",
@@ -1396,7 +1416,7 @@
       img:"https://file.garden/ad35P9foF0kAW7I8/Bloodhound.jpg",
       heart:"💌",
       title:"Bloodhound",
-      desc:"paste a short blurb here — fandom, pairing, vibe, whatever hooks a reader in one line.",
+      desc:"Sheltered in the high-stakes halls of political power, Angelina Molkova was taught to believe in justice, purity, and light. Then she crossed paths with Vladimir Makarov—a merciless embodiment of pure evil who saw her innocence not as a sacred gift, but as a weapon to be twisted, corrupted, and destroyed. What began as a fateful encounter becomes a harrowing journey into absolute darkness. With venomous whispers and relentless psychological mastery, Makarov systematically dismantles her soul, dragging her down a profane path of no return. This is no sweet romance—it is a brutal, mesmerizing descent into damnation. She knew she should have fled, but the darkness claimed her, locking the gates of heaven forever and chaining her forever to the devil himself.",
       tags:["#COD:MW","#VladimirMakarovxOFL","hurt/comfort","DD:DNE"],
       cta:"Wattpad",
       url:"https://www.wattpad.com/story/375682758-bloodhound-vladimir-makarov-x-ofc",
